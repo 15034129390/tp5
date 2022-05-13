@@ -62,64 +62,64 @@ class PHPExcel_Writer_Excel2007_ContentTypes extends PHPExcel_Writer_Excel2007_W
 
 			// Theme
 			$this->_writeOverrideContentType(
-				$objWriter, '/xl/theme/theme1.xml', 'application/vnd.openxmlformats-officedocument.theme+xml'
+				$objWriter, '/xl/theme/theme1.xml', 'app/vnd.openxmlformats-officedocument.theme+xml'
 			);
 
 			// Styles
 			$this->_writeOverrideContentType(
-				$objWriter, '/xl/styles.xml', 'application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml'
+				$objWriter, '/xl/styles.xml', 'app/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml'
 			);
 
 			// Rels
 			$this->_writeDefaultContentType(
-				$objWriter, 'rels', 'application/vnd.openxmlformats-package.relationships+xml'
+				$objWriter, 'rels', 'app/vnd.openxmlformats-package.relationships+xml'
 			);
 
 			// XML
 			$this->_writeDefaultContentType(
-				$objWriter, 'xml', 'application/xml'
+				$objWriter, 'xml', 'app/xml'
 			);
 
 			// VML
 			$this->_writeDefaultContentType(
-				$objWriter, 'vml', 'application/vnd.openxmlformats-officedocument.vmlDrawing'
+				$objWriter, 'vml', 'app/vnd.openxmlformats-officedocument.vmlDrawing'
 			);
 
 			// Workbook
 			if($pPHPExcel->hasMacros()){ //Macros in workbook ?
 				// Yes : not standard content but "macroEnabled"
 				$this->_writeOverrideContentType(
-					$objWriter, '/xl/workbook.xml', 'application/vnd.ms-excel.sheet.macroEnabled.main+xml'
+					$objWriter, '/xl/workbook.xml', 'app/vnd.ms-excel.sheet.macroEnabled.main+xml'
 				);
 				//... and define a new type for the VBA project
 				$this->_writeDefaultContentType(
-							$objWriter, 'bin', 'application/vnd.ms-office.vbaProject'
+							$objWriter, 'bin', 'app/vnd.ms-office.vbaProject'
 						);
 				if($pPHPExcel->hasMacrosCertificate()){// signed macros ?
 					// Yes : add needed information
 					$this->_writeOverrideContentType(
-						$objWriter, '/xl/vbaProjectSignature.bin', 'application/vnd.ms-office.vbaProjectSignature'
+						$objWriter, '/xl/vbaProjectSignature.bin', 'app/vnd.ms-office.vbaProjectSignature'
 				);
 				}
 			}else{// no macros in workbook, so standard type
 				$this->_writeOverrideContentType(
-					$objWriter, '/xl/workbook.xml', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml'
+					$objWriter, '/xl/workbook.xml', 'app/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml'
 				);
 			}
 
 			// DocProps
 			$this->_writeOverrideContentType(
-				$objWriter, '/docProps/app.xml', 'application/vnd.openxmlformats-officedocument.extended-properties+xml'
+				$objWriter, '/docProps/app.xml', 'app/vnd.openxmlformats-officedocument.extended-properties+xml'
 			);
 
 			$this->_writeOverrideContentType(
-				$objWriter, '/docProps/core.xml', 'application/vnd.openxmlformats-package.core-properties+xml'
+				$objWriter, '/docProps/core.xml', 'app/vnd.openxmlformats-package.core-properties+xml'
 			);
 
 			$customPropertyList = $pPHPExcel->getProperties()->getCustomProperties();
 			if (!empty($customPropertyList)) {
 				$this->_writeOverrideContentType(
-					$objWriter, '/docProps/custom.xml', 'application/vnd.openxmlformats-officedocument.custom-properties+xml'
+					$objWriter, '/docProps/custom.xml', 'app/vnd.openxmlformats-officedocument.custom-properties+xml'
 				);
 			}
 
@@ -127,13 +127,13 @@ class PHPExcel_Writer_Excel2007_ContentTypes extends PHPExcel_Writer_Excel2007_W
 			$sheetCount = $pPHPExcel->getSheetCount();
 			for ($i = 0; $i < $sheetCount; ++$i) {
 				$this->_writeOverrideContentType(
-					$objWriter, '/xl/worksheets/sheet' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml'
+					$objWriter, '/xl/worksheets/sheet' . ($i + 1) . '.xml', 'app/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml'
 				);
 			}
 
 			// Shared strings
 			$this->_writeOverrideContentType(
-				$objWriter, '/xl/sharedStrings.xml', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml'
+				$objWriter, '/xl/sharedStrings.xml', 'app/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml'
 			);
 
 			// Add worksheet relationship content types
@@ -146,7 +146,7 @@ class PHPExcel_Writer_Excel2007_ContentTypes extends PHPExcel_Writer_Excel2007_W
 				//	We need a drawing relationship for the worksheet if we have either drawings or charts
 				if (($drawingCount > 0) || ($chartCount > 0)) {
 					$this->_writeOverrideContentType(
-						$objWriter, '/xl/drawings/drawing' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.drawing+xml'
+						$objWriter, '/xl/drawings/drawing' . ($i + 1) . '.xml', 'app/vnd.openxmlformats-officedocument.drawing+xml'
 					);
 				}
 
@@ -154,7 +154,7 @@ class PHPExcel_Writer_Excel2007_ContentTypes extends PHPExcel_Writer_Excel2007_W
 				if ($chartCount > 0) {
 					for ($c = 0; $c < $chartCount; ++$c) {
 						$this->_writeOverrideContentType(
-							$objWriter, '/xl/charts/chart' . $chart++ . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml'
+							$objWriter, '/xl/charts/chart' . $chart++ . '.xml', 'app/vnd.openxmlformats-officedocument.drawingml.chart+xml'
 						);
 					}
 				}
@@ -164,7 +164,7 @@ class PHPExcel_Writer_Excel2007_ContentTypes extends PHPExcel_Writer_Excel2007_W
 			for ($i = 0; $i < $sheetCount; ++$i) {
 				if (count($pPHPExcel->getSheet($i)->getComments()) > 0) {
 					$this->_writeOverrideContentType(
-						$objWriter, '/xl/comments' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml'
+						$objWriter, '/xl/comments' . ($i + 1) . '.xml', 'app/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml'
 					);
 				}
 			}

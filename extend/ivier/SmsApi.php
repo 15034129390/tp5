@@ -49,7 +49,7 @@ class SmsApi
 			if(is_string($data)){
             	//发送JSON数据
 				$opts[CURLOPT_HTTPHEADER] = array(
-					'Content-Type: application/json; charset=utf-8',  
+					'Content-Type: app/json; charset=utf-8',
 					'Content-Length: ' . strlen($data),
 					);
 			}

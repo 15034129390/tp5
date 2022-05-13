@@ -106,7 +106,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 
 			$zip->close();
 
-			return ($mimeType === 'application/vnd.oasis.opendocument.spreadsheet');
+			return ($mimeType === 'app/vnd.oasis.opendocument.spreadsheet');
 		}
 
 		return FALSE;

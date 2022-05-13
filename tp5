@@ -40,7 +40,7 @@ else{
 }
 function getTables()
 {
-	$config=include('application/database.php');
+	$config=include('app/database.php');
 	$host=$config['hostname'];
 	$database=$config['database'];
 	$dsn = "mysql:host=$host;dbname=$database";
@@ -72,12 +72,12 @@ function showMsg($msg)
 
 function createModelFile($fname,$content,$comment='')
 {
-	create_file_build($fname,$content,'application/common/model/',$comment);
+	create_file_build($fname,$content,'app/common/model/',$comment);
 }
 
 function createControllerFile($fname,$content,$comment='')
 {
-	create_file_build($fname,$content,'application/admin/controller/',$comment);
+	create_file_build($fname,$content,'app/admin/controller/',$comment);
 }
 
 function create_file_build($fname,$content,$file_dir,$comment)

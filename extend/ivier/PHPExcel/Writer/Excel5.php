@@ -602,7 +602,7 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 								   'data'	=> array('data' => $dataProp, 'length' => strlen($dataProp)));
 			$dataSection_NumProps++;
 		}
-		// GKPIDDSI_VERSION :Version of the application that wrote the property storage
+		// GKPIDDSI_VERSION :Version of the app that wrote the property storage
 		$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x17),
 							   'offset' => array('pack' => 'V'),
 							   'type' 	=> array('pack' => 'V', 'data' => 0x03),
@@ -614,7 +614,7 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 							   'type' 	=> array('pack' => 'V', 'data' => 0x0B),
 							   'data'	=> array('data' => false));
 		$dataSection_NumProps++;
-		// GKPIDDSI_LINKSDIRTY : True if any of the values for the linked properties have changed outside of the application
+		// GKPIDDSI_LINKSDIRTY : True if any of the values for the linked properties have changed outside of the app
 		$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x10),
 							   'offset' => array('pack' => 'V'),
 							   'type' 	=> array('pack' => 'V', 'data' => 0x0B),
@@ -626,7 +626,7 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 							   'type' 	=> array('pack' => 'V', 'data' => 0x0B),
 							   'data'	=> array('data' => false));
 		$dataSection_NumProps++;
-		// GKPIDDSI_HYPERLINKSCHANGED : True if any of the values for the _PID_LINKS (hyperlink text) have changed outside of the application
+		// GKPIDDSI_HYPERLINKSCHANGED : True if any of the values for the _PID_LINKS (hyperlink text) have changed outside of the app
 		$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x16),
 							   'offset' => array('pack' => 'V'),
 							   'type' 	=> array('pack' => 'V', 'data' => 0x0B),

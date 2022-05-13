@@ -622,7 +622,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		// Read the summary information stream (containing meta data)
 		$this->_readSummaryInformation();
 
-		// Read the Additional document summary information stream (containing application-specific meta data)
+		// Read the Additional document summary information stream (containing app-specific meta data)
 		$this->_readDocumentSummaryInformation();
 
 		// total byte size of Excel data (workbook global substream + sheet substreams)
@@ -1323,7 +1323,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					//	Not supported by PHPExcel
 					break;
 
-				case 0x12:	//	Name of creating application
+				case 0x12:	//	Name of creating app
 					//	Not supported by PHPExcel
 					break;
 

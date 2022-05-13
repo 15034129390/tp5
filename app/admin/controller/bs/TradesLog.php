@@ -134,9 +134,9 @@ class TradesLog extends  Base
 		$outFileName =$title.".xls";
 		\think\Loader::import('ivier.PHPExcel.PHPExcel_Writer_Excel5');
 		$xlsWriter = new \PHPExcel_Writer_Excel5($resultPHPExcel);
-		header("Content-Type: application/force-download");
-		header("Content-Type: application/octet-stream");
-		header("Content-Type: application/download");
+		header("Content-Type: app/force-download");
+		header("Content-Type: app/octet-stream");
+		header("Content-Type: app/download");
 		header('Content-Disposition:inline;filename="'.$outFileName.'"');
 		header("Content-Transfer-Encoding: binary");
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
