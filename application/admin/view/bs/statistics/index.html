@@ -1,0 +1,244 @@
+{extend name="layout/list" /}
+{block name="body"}
+<style type="text/css">
+	.page-container,table th,.table td{text-align: center;font-size: 15px;} 
+	table a{font-size: 18px;color: red;} 
+	.HuiTab{display: inline-block;} 
+	.mc{margin: 0 auto;}
+</style>
+<div class="page-container"> 
+	<table class="table table-border table-bordered mc" style="width:615px;">
+		<tr>
+			<th>总 挂 号：</th>
+			<th><a href=""><span>{$tj.a}</span></a></th>
+			<th>总到店：</th>
+			<th><a href=""><span>{$tj.a_dz}</span></a></th>
+			<th>到店率：</th>
+			<th><span>{gt name='tj.a' value='0'}
+				{$tj['a_dz']*100/$tj['a']|round=2}%
+				{else/}
+				0%{/gt}</span></th>
+			</tr>
+		</table>
+
+		<div class="HuiTab mt-20" id="tab-system">
+			<div class="tabBar cl">
+				<span class="current">总体统计</span>
+				<span>按来源统计</span>
+				<span>按预约统计</span>
+				<span>按客服统计</span>
+				<span>按技师统计</span>
+				<span>按品牌统计</span>
+			</div>
+			<div class="tabCon">
+				<table class="table table-border table-bordered">
+					<tr>
+						<th></th>
+						<th>登记</th>
+						<th>预约</th>
+						<th>到店</th>
+						<th>到店率</th>
+					</tr>
+					<tr>
+						<td>今天</td>
+						<td><a href="javascript:;" onclick="open_full_win('今日登记','{:url('bs.booking/index')}?sltDateType=1&ft=today','800','550')">{$tj.d.dj}</a></td>
+						<td><a href="javascript:;" onclick="open_full_win('今日预约','{:url('bs.booking/index')}?sltDateType=2&ft=today','800','550')">{$tj.d.yy}</a></td>
+						<td><a href="javascript:;" onclick="open_full_win('今日到院','{:url('bs.booking/index')}?sltDateType=3&ft=today','800','550')" >{$tj.d.dz}</a></td>
+						<td>{gt name='tj.d.yy' value='0'}{$tj['d']['dz']*100/$tj['d']['yy']|round=2}%
+							{else/}0.00%
+							{/gt}</td>
+						</tr>
+						<tr>
+							<td>昨天</td>
+							<td><a href="javascript:;" onclick="open_full_win('昨天登记','{:url('bs.booking/index')}?sltDateType=1&ft=yday','800','550')" >{$tj.zd.dj}</a></td>
+							<td><a href="javascript:;" onclick="open_full_win('昨天预约','{:url('bs.booking/index')}?sltDateType=2&ft=yday','800','550')">{$tj.zd.yy}</a></td> 
+							<td><a href="javascript:;" onclick="open_full_win('昨天到院','{:url('bs.booking/index')}?sltDateType=3&ft=yday','800','550')" >{$tj.zd.dz}</a></td> 
+							<td>{gt name='tj.zd.yy' value='0'}{$tj['zd']['dz']*100/$tj['zd']['yy']|round=2}%
+								{else/}0.00%
+								{/gt}
+							</td>
+						</tr>
+						<tr>
+							<td>本周</td>
+							<td><a href="javascript:;" onclick="open_full_win('本周登记','{:url('bs.booking/index')}?sltDateType=1&ft=week','800','550')" >{$tj.w.dj}</a></td>  
+							<td><a href="javascript:;" onclick="open_full_win('本周预约','{:url('bs.booking/index')}?sltDateType=1&ft=week','800','550')" >{$tj.w.yy}</a></td> 
+							<td><a href="javascript:;" onclick="open_full_win('本周到院','{:url('bs.booking/index')}?sltDateType=3&ft=yday','800','550')" >{$tj.w.dz}</a></td>  
+							<td>{gt name='tj.w.yy' value='0'}{$tj['w']['dz']*100/$tj['w']['yy']|round=2}%
+								{else/}0.00%
+								{/gt}
+							</td>
+						</tr>
+						<tr>
+							<td>上周</td>
+							<td><a href="javascript:;" onclick="open_full_win('上周登记','{:url('bs.booking/index')}?sltDateType=1&ft=lweek','800','550')" >{$tj.zw.dj}</a></td> 
+							<td><a href="javascript:;" onclick="open_full_win('上周预约','{:url('bs.booking/index')}?sltDateType=2&ft=lweek','800','550')" >{$tj.zw.yy}</a></td>  
+							<td><a href="javascript:;" onclick="open_full_win('上周到院','{:url('bs.booking/index')}?sltDateType=3&ft=lweek','800','550')" >{$tj.zw.dz}</a></td>  
+							<td>{gt name='tj.zw.yy' value='0'}{$tj['zw']['dz']*100/$tj['zw']['yy']|round=2}%
+								{else/}0.00%
+								{/gt}
+							</td>
+						</tr>
+						<tr>
+							<td>本月</td> 
+							<td><a href="javascript:;" onclick="open_full_win('本月登记','{:url('bs.booking/index')}?sltDateType=1&ft=month','800','550')" >{$tj.m.dj}</a></td> 
+							<td><a href="javascript:;" onclick="open_full_win('本月预约','{:url('bs.booking/index')}?sltDateType=2&ft=month','800','550')" >{$tj.m.yy}</a></td>  
+							<td><a href="javascript:;" onclick="open_full_win('本月到院','{:url('bs.booking/index')}?sltDateType=3&ft=month','800','550')" >{$tj.m.dz}</a></td>   
+							<td>{gt name='tj.m.yy' value='0'}{$tj['m']['dz']*100/$tj['m']['yy']|round=2}%
+								{else/}0.00%
+								{/gt}
+							</td>
+						</tr>
+						<tr>
+							<td>上月</td>
+							<td><a href="javascript:;" onclick="open_full_win('上月登记','{:url('bs.booking/index')}?sltDateType=1&ft=lmonth','800','550')" >{$tj.zm.dj}</a></td> 
+							<td><a href="javascript:;" onclick="open_full_win('上月预约','{:url('bs.booking/index')}?sltDateType=2&ft=lmonth','800','550')" >{$tj.zm.yy}</a></td>  
+							<td><a href="javascript:;" onclick="open_full_win('上月到院','{:url('bs.booking/index')}?sltDateType=3&ft=lmonth','800','550')" >{$tj.zm.dz}</a></td>    
+							<td>{gt name='tj.zm.yy' value='0'}{$tj['zm']['dz']*100/$tj['zm']['yy']|round=2}%
+								{else/}0.00%
+								{/gt}
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="tabCon">
+					<table class="table table-border table-bordered">
+						<tbody>
+							<tr>
+								<th >&nbsp;</th>
+								<th >登记</th>
+								<th >预约</th>
+								<th >到店</th>
+								<th >到店率</th>
+							</tr>
+							{volist name='tj.yyway' id='item'}
+							<tr>
+								<td>{$item.name}</td>
+								<td>{$item.dj|default=0}</td>
+								<td>{$item.yy|default=0}</td>
+								<td>{$item.dz|default=0}</td>
+								<td>{gt name='item.yy' value='0'}{$item['dz']*100/$item['yy']|round=2}%
+									{else/}0.00%
+									{/gt}
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+				<div class="tabCon">
+					<table class="table table-border table-bordered">
+						<tbody>
+							<tr>
+								<th >&nbsp;</th>
+								<th >登记</th>
+								<th >预约</th>
+								<th >到店</th>
+								<th >到店率</th>
+							</tr>
+							{volist name='tj.comeway' id='item'}
+							<tr>
+								<td>{$item.name}</td>
+								<td>{$item.dj|default=0}</td>
+								<td>{$item.yy|default=0}</td>
+								<td>{$item.dz|default=0}</td>
+								<td>{gt name='item.yy' value='0'}{$item['dz']*100/$item['yy']|round=2}%
+									{else/}0.00%
+									{/gt}
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+				<div class="tabCon">
+					<table class="table table-border table-bordered">
+						<tbody>
+							<tr>
+								<th >&nbsp;</th>
+								<th >登记</th>
+								<th >预约</th>
+								<th >到店</th>
+								<th >到店率</th>
+							</tr>
+							{volist name='tj.kf' id='item'}
+							<tr>
+								<td>{$item.name}</td>
+								<td>{$item.dj|default=0}</td>
+								<td>{$item.yy|default=0}</td>
+								<td>{$item.dz|default=0}</td>
+								<td>{gt name='item.yy' value='0'}{$item['dz']*100/$item['yy']|round=2}%
+									{else/}0.00%
+									{/gt}
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+				<div class="tabCon">
+					<table class="table table-border table-bordered">
+						<tbody>
+							<tr>
+								<th >&nbsp;</th>
+								<th >登记</th>
+								<th >预约</th>
+								<th >到店</th>
+								<th >到店率</th>
+							</tr>
+							{volist name='tj.ys' id='item'}
+							<tr>
+								<td>{$item.name}</td>
+								<td>{$item.dj|default=0}</td>
+								<td>{$item.yy|default=0}</td>
+								<td>{$item.dz|default=0}</td>
+								<td>{gt name='item.yy' value='0'}{$item['dz']*100/$item['yy']|round=2}%
+									{else/}0.00%
+									{/gt}
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+				<div class="tabCon">
+					<table class="table table-border table-bordered">
+						<tbody>
+							<tr>
+								<th >&nbsp;</th>
+								<th >登记</th>
+								<th >预约</th>
+								<th >到店</th>
+								<th >到店率</th>
+							</tr>
+							{volist name='tj.ks' id='item'}
+							<tr>
+								<td>{$item.name}</td>
+								<td>{$item.dj|default=0}</td>
+								<td>{$item.yy|default=0}</td>
+								<td>{$item.dz|default=0}</td>
+								<td>{gt name='item.yy' value='0'}{$item['dz']*100/$item['yy']|round=2}%
+									{else/}0.00%
+									{/gt}
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		{/block}
+		{block name='js'} 
+		{js href='/static/H-ui/lib/icheck/jquery.icheck.min.js'/}
+		<script type="text/javascript">
+			$(function(){
+				$('.skin-minimal input').iCheck({
+					checkboxClass: 'icheckbox-blue',
+					radioClass: 'iradio-blue',
+					increaseArea: '20%'
+				});
+				$.Huitab("#tab-system .tabBar span","#tab-system .tabCon","current","click","0");
+			});
+		</script>
+
+		{/block}

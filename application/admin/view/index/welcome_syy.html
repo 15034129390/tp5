@@ -1,0 +1,132 @@
+{extend name="layout/list" /}
+{block name="body"}
+<style type="text/css">
+	.nav{
+		width: 400px;
+		margin:0px auto;
+	}
+	.nav .nav_item{
+		-webkit-border-radius: 6px;
+		-moz-border-radius: 6px;
+		border-radius: 6px;
+		display: block;
+		margin: 20px;
+		width: 100px;
+		float: left;
+		border: 1px solid #eee;
+		text-align: center;
+		padding: 10px 20px;
+		color: #1296db;
+		font-size: 16px;
+		font-weight: bold;
+		background-color: #fff;
+		border: 1px solid #1296db;
+		cursor: pointer;
+	}
+	.nav .nav_item:hover{
+		background-color: #1296db;
+		color: #fff;
+	}
+	.nav .nav_item span{
+		margin-top: 10px;
+		display: block;
+	}
+	.nav .nav_item .sk,.nav .nav_item .cz{
+		width: 80px;
+		height: 80px;
+		background-size:cover;
+		margin-left:10px;
+		background-position: center;
+	}
+	.nav .nav_item .cz{
+		background-image: url(/static/icon/cz.png);
+	}
+	.nav .nav_item .sk{
+		background-image: url(/static/icon/shoukuan.png);
+	}
+	.nav .nav_item:hover .cz{
+		background-image: url(/static/icon/cz_hover.png);
+	}
+	.nav .nav_item:hover .sk{
+		background-image: url(/static/icon/shoukuan_hover.png);
+	}
+	.tj_tab{
+		margin:0px auto;
+		width: 580px;
+	}
+	.tj_tab dl{
+		border:1px solid #eee;
+		padding: 10px;
+		width: 150px;
+		float: left;
+		margin-left: 20px;
+		cursor: pointer;
+		font-size: 12px;
+	}
+	.tj_tab dl:hover{
+		border:1px solid #2091CF;
+	}
+	.tj_tab dl img{
+		width: 48px;
+		height: 48px;
+	}
+	.tj_tab dt{
+		float: left;
+	}
+	.tj_tab dd{
+		margin-left: 50px;
+	}
+	.tj_tab label{
+		font-size: 22px;
+		color: #d9534f;
+		font-family: 'Open Sans';
+		text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+		margin-bottom: 0px; 
+	}
+</style>
+<div class="nav">
+{auth value='bs.card/recharge'}
+	<div onclick="parent.layer_show('充值','{:url('bs.card/recharge')}','700','700');" class="nav_item">
+		<div class="cz"></div>
+		<span>充值</span>
+	</div>
+	{/auth}
+	{auth value='bs.card/charge'}
+	<div onclick="parent.layer_show('收费','{:url('bs.card/charge')}','700','760');" class="nav_item">
+		<div class="sk"></div>
+		<span>收费</span>
+	</div>
+	{/auth}
+	<div style="clear:both;"></div>
+</div>
+<div class="tj_tab">
+	<dl>
+		<dt>
+			<img src="/static/icon/cz.png" alt="">
+		</dt>
+		<dd>
+			<label for="">{$tj.cz|def='0.00'}元</label>
+			<div>今日充值</div>
+		</dd>
+	</dl>
+	<dl>
+		<dt>
+			<img src="/static/icon/shoukuan.png" alt="">
+		</dt>
+		<dd>
+			<label for="">{$tj.xf|def='0.00'}元</label>
+			<div>今日刷卡消费</div>
+		</dd>
+	</dl>
+	<dl>
+		<dt>
+			<img src="/static/icon/skr.png" alt="">
+		</dt>
+		<dd>
+			<label for="">{$tj.rs|def='0'}人</label>
+			<div>今日刷卡人数</div>
+		</dd>
+	</dl>
+</div>
+
+{/block}

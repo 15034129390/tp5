@@ -1,0 +1,335 @@
+	{extend name="layout/list" /}
+	{block name="body"}
+	<style type="text/css">
+		.breadcrumb{display: none;}
+		.clearfix{clear: both;}
+		pre{color: #60F;border: 1px solid #C6E0EE;}
+		.swthiden,.dis-n{display: none;} 
+		.select-box{
+			display: inline;
+			width: 100px;
+		}
+		.select{
+			width: 100px;
+			background-color: #f5fafe;
+		}
+		.z_row{
+			color: #000;
+		}
+	</style>
+
+	<div class="cl pd-5 bg-1 bk-gray"> 
+		<span class="l">
+			{auth action='create'} 
+			<a class="btn btn-primary radius" href="javascript:;" onclick="parent.open_full_win('登记','{:url("create")}','800','550')"><i class="Hui-iconfont">&#xe600;</i> 登记</a>
+			{/auth}
+			&nbsp;
+			<span class="select-box">
+				<select class="select" id="sltDateType">
+					<option value="1">登记时间</option>
+					<option value="2">预约时间</option>
+					<option value="3">到店时间</option>
+					<option value="4">回访时间</option>
+				</select>
+			</span>
+
+			<input class="btn btn-link radius" onclick="queryType('Tomorrow');" type="button" value="明天">/
+			<input class="btn btn-link radius" onclick="queryType('Today');" type="button" value="今天">/
+			<input class="btn btn-link radius" onclick="queryType('Yesterday');" type="button" value="昨天">/
+			<input class="btn btn-link radius" onclick="queryType('Week');" type="button" value="本周">/
+			<input class="btn btn-link radius" onclick="queryType('Last7Days');" type="button" value="近七天">/
+			<input class="btn btn-link radius" onclick="queryType('LastWeek');" type="button" value="上周">/
+			<input class="btn btn-link radius" onclick="queryType('Month');" type="button" value="本月">/
+			<input class="btn btn-link radius" onclick="queryType('LastMonth');" type="button" value="上月">
+			<span>红色：过期 &nbsp;/ 绿色：已到 &nbsp; /蓝色：预约当天&nbsp; /灰色：预约明天 &nbsp;/粉色：预约明天以后&nbsp;/黑色：未预约</span>
+		</span>
+		<span class="r">共有数据：<strong>{$pageInfo->total()}</strong> 条
+				<a href="{:$_SERVER["REQUEST_URI"]}&op=1" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe641;</i> 下载</a>
+			</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg table-sort dataTable no-footer" id="DataTables_Table_0" >
+		<thead>
+			<tr class="text-c" role="row">	 
+				<th width="25" class="sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 25px;"><input type="checkbox" name="" value=""></th>
+				<th class="col_1">预约号</th>
+				<th class="col_2">类别（姓名）</th>
+				<th class="col_3">咨询人性别</th>
+				<th class="col_4">使用时间</th>
+				<th class="col_5">电话</th>
+				<th class="col_6">品牌</th>
+				<th class="col_7">故障类别</th>
+				<th class="col_8">所属省份</th>
+				<th class="col_8">所在市区</th>
+				<th class="col_9">来源媒体</th>
+				<th class="col_9">预约方式</th>
+				<th class="col_10">客服</th>
+				<th class="col_11">登记时间</th>
+				<th class="col_12">预计到店时间</th>
+				<th class="col_13">到店时间</th>
+				<th class="col_14">签到</th>
+				<th class="col_15">会员</th>
+				<th class="col_16">回访</th> 
+				<th class="col_17">回访时间</th>
+				<th class="col_18">操作</th>
+			</tr>
+		</thead>
+		<tbody> 
+			
+			{volist name='pageInfo' id='item'}
+			<tr class="text-c odd patient" role="row"> 
+
+				<td><input type="checkbox" value="" name=""></td>
+				<!-- 预约号 -->
+				<td class="col_1 z_row">{$item.id}({$item.old_id})</td>
+				<!-- 类别姓名 -->
+				<td class="z_row">{$item.name|default='无'}({$item.zname|default='无'})</td>
+				<!-- 咨询人性别 -->
+				<td class="z_row">
+					{switch name="item.gender"}
+					{case value="1"}男{/case}
+					{case value="2"}女{/case}
+					{default/}保密
+					{/switch}
+				</td>
+				<!-- 使用时间 -->
+				<td class="z_row">{$item.age|default='未知'}</td>
+				<!-- 电话 -->
+				<td class="z_row">
+					{auth value='reservation_list_phone_number_display'}
+					{$item.mobile}
+					{else/}
+					{$item.mobile|hidtel}
+					{/auth}
+				</td>
+				<!-- 品牌 -->
+				<td class="z_row">
+					{gt name="item.department_id" value="0"}
+					<a class="btn-link z_row" onclick="event.stopPropagation();" href="{:url('')}?department_id={$item.department_id}">{$item.department_name|default='无'}</a>
+					{else/}
+					{$item.department_name|default='无'}
+					{/gt}
+				</td>
+				<!-- 故障类别 -->
+				<td class="z_row z_row">
+					{gt name="item.disease_id" value="0"}
+					<a class="btn-link z_row" onclick="event.stopPropagation();" href="{:url('')}?bz_id={$item.disease_id}">{$item.disease_name|default='无'}</a>
+					{else/}
+					{$item.disease_name|default='无'}
+					{/gt}
+				</td>
+				<!-- 省份 -->
+				<td class="z_row">
+					{gt name="item.province_id" value="0"}
+					<a class="btn-link z_row" onclick="event.stopPropagation();" href="{:url('')}?sf_id={$item.province_id}">{$item.province_name|default='无'}</a>
+					{else/}
+					{$item.yy_doctor_name|default='无'}
+					{/gt}
+				</td>
+				<!-- 市区 -->
+				<td class="z_row">
+					{gt name="item.city_id" value="0"}
+					<a class="btn-link z_row" onclick="event.stopPropagation();" href="{:url('')}?sq_id={$item.city_id}">{$item.city_name|default='无'}</a>
+					{else/}
+					{$item.yy_doctor_name|default='无'}
+					{/gt}
+				</td>
+				<!-- 来源媒体 -->
+				<td class="z_row z_row">
+					<a class="btn-link z_row" onclick="event.stopPropagation();" href="{:url('')}?way_id={$item.consultation_way_id}">{$item.way_name}</a>
+				</td>
+				<!-- 预约方式 -->
+				<td class="z_row z_row">
+					<a class="btn-link z_row" onclick="event.stopPropagation();" href="{:url('')}?mode_id={$item.appointment_mode_id}">{$item.way_namea}</a>
+				</td>
+				<!-- 客服 -->
+				<td class="z_row z_row">
+					<a class="btn-link z_row" href="{:url('')}?kf_id={$item.custom_service_id}" onclick="event.stopPropagation();">
+						{$item.custom_service_name}
+					</a>
+				</td>
+				<!-- 登记时间 -->
+				<td class="z_row z_row">
+					<a href="javascript:ct_time('{$item.create_time|date='Y-m-d',###}');" class="btn-link z_row" onclick="event.stopPropagation();">
+						{$item.create_time|date='Y-m-d H:i',###}
+					</a>
+				</td>
+				<!-- 预计到店时间 -->
+				<td class="z_row z_row">
+					<a href="javascript:yy_time('{$item.yy_time|substr=0,10}');" class="btn-link z_row sj_color" onclick="event.stopPropagation();">
+						{$item.yy_time|substr=0,16}
+					</a>
+				</td>
+				<!-- 到店时间 -->
+				<td class="z_row z_row">
+					{eq name='item.status' value='3'}
+					<a class="btn-link z_row hasto" href="javascript:jz_time('{$item.create_time|date='Y-m-d',###}')">{$item.jz_time|date='Y-m-d H:i',###}</a>
+					{else/}
+					未到
+					{/eq}
+				</td>
+				<!-- 签到 -->
+				<td class="z_row z_row">
+					{eq name='item.status' value='3'}
+					<a onclick="event.stopPropagation();" href="{:url('')}?dz_status={$item.status}">
+						<label class="btn btn-success size-MINI radius ">已到</label>
+					</a>
+					{else/}
+					{eq name='item.status' value='2'}
+					{if condition="$item['yy_time'] LT date('Y-m-d')"}
+					<a onclick="event.stopPropagation();" href="javascript:parent.arriving('{$item.id}','{$item.name|default='无'}')">
+						<label class="btn btn-danger size-MINI radius">过期</label>
+					</a>
+					{else/}
+					<a onclick="event.stopPropagation();" href="javascript:parent.arriving('{$item.id}','{$item.name|default='无'}')">
+						<label class="btn btn-primary size-MINI radius">签到</label>
+					</a>
+					{/if}
+					{else/}
+					<a onclick="event.stopPropagation();" href="javascript:parent.arriving('{$item.id}','{$item.name|default='无'}')">
+						<label class="btn btn-primary size-MINI radius">登记</label>
+					</a>
+					{/eq}
+					{/eq}
+				</td>
+				<!-- 会员 -->
+				<td>{$item.member_name|default='无'}（{$item.card_no|default='无'}）</td>
+				<!-- 回访 -->
+				<td ><a class='label btn-primary radius' onclick="return visit({$item.id},'{$item.name|default='无'}【电话:{$item.mobile}】');">{$item.visits|count}</a></td>
+				<?php if ($item['visits']&&count($item['visits'])>0) {
+				$lv=$item['visits'][0];
+				?>
+				<!-- 回访时间 -->
+				<td>【{$lv.user_name}】{$lv.create_time|date='y/m/d H:i',###}</td>
+				<?php }else{ ?>
+				<td>无</td>
+				<?php } ?>
+				<!-- 操作 -->
+				<td class="f-14" onclick="event.stopPropagation();"> 
+					<a title="编辑" href="javascript:;" onclick="parent.open_full_win('编辑','{:url('edit?id='.$item['id'])}','800','500')" >
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+					<a title="删除" href="javascript:;" onclick="parent.admin_role_del(this,'{$item.id}')" class="ml-5" >
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</td>
+				<!--$lv=$item['visits'][count($item['visits'])-1];-->
+			</tr>
+			<tr class="dis-n">
+				<td  colspan="100" style="padding:5px 50px;">
+					挂号姓名：{$item.name|default='无'} |
+					故障类型：{$item.department_name|default='无'} {$item.disease_name|default='无'}|
+					来源媒体： {$item.source_name|default='无'}|
+					搜索关键词：{$item.source_search_keywords|default='无'} |
+					来店方式：{$item.come_way_name|default='无'} | 
+					所在省市：{$item.province_name|default='无'} {$item.city_name} |
+					联系地址： {$item.address|default='无'} |
+					<div class="swthiden">
+						{$item.swt|default='无'}
+					</div>
+
+					<br/> 
+					挂号时间：{$item.create_time|date='Y-m-d H:i',###} | 预计到店时间：{$item.yy_time|substr=0,16}<br/>
+					故障类型：
+					<pre>{$item.disease_desc|default='无'}</pre>
+					商务通信息：
+					<pre>{$item.swt | default="无"}</pre>
+					其他备注：
+					<pre>{$item.remark|default='无'}</pre>
+					技师备注：{$item.doctor_remark|default='无'}<br/>
+					客户回访：<br/>
+					{volist name='item.visits' id='visit'} 
+					<label class="btn-link">
+						【{$visit.user_name}】{$visit.create_time|date='y/m/d H:i',###}&nbsp;&nbsp;{$visit.content} </label><br/>
+						{/volist}
+						到店时间：{$item.jz_time|date='Y-m-d H:i',###}<br/>
+						提交IPss：{$item.input_ip} | 来源网站：<a href="{$item.site_url}">{$item.source_site_name}</a><br/>
+						顾客IP：{$item.source_ip|default='无'} | 咨询页面：<a href="{$item.source_consulting_page}">{$item.source_consulting_page|default='无'}</a><br/>
+					</td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+
+		{$pageInfo->render()} 
+
+		{/block}
+		{block name='js'}
+		<script type="text/javascript">
+			$(function(){
+		    //获取当天0点的时间戳
+				 var start=new Date();  
+		         start.setHours(0);  
+		         start.setMinutes(0);  
+		         start.setSeconds(0);  
+		         start.setMilliseconds(0);  
+		         var todayStartTime=Date.parse(start)/1000;
+		         var oneday=60*60*24; 
+			//获取预计到店时间戳
+			$(".patient").children("td").each(function(){
+				 var yysj=(Date.parse(new Date($(this).children(".sj_color").text())))/1000;
+		         if(todayStartTime>yysj){
+		         	$(this).parent().find('.z_row').css('color','red');
+		         }else if((todayStartTime+oneday)>yysj&yysj>todayStartTime){
+		         	$(this).parent().find('.z_row').css('color','#0000FF');
+		         }else if((todayStartTime+oneday+oneday)>yysj&yysj>(todayStartTime+oneday)){
+		         	$(this).parent().find('.z_row').css('color','#c10066');
+		         }else if(yysj>(todayStartTime+oneday+oneday)){
+		         	$(this).parent().find('.z_row').css('color','#c10066');
+		         }
+		         var hasto=(Date.parse(new Date($(this).children(".hasto").text())))/1000;
+		         if(hasto>oneday){
+		         	$(this).parent().find('.z_row').css('color','#00dd00');
+		         }
+			});
+
+         })
+
+			var str='<form action="{:url("visit")}" class="form form-horizontal" id="fromvisit" onsubmit="return vis(this)"><div class="cl"><input type="hidden" name="booking_id" value="{id}"><div class="formControls col-xs-12"><textarea required name="content" class="textarea"></textarea></div><div class="clearfix"></div><div class="btn-group mt-20"><center><button class="btn btn-primary radius">添加</button></center></div></div></form>';
+			function visit(id,title){ 
+				layer.open({
+					type: 1,
+					title:'回访信息-'+title,
+					skin: 'layui-layer-rim', 
+					area: ['380px', '210px'],  
+					content: str.replace('{id}',id)
+				}); 
+				event.stopPropagation();  
+			}
+			function vis(obj){
+				var vs=$(obj).find('textarea').val();
+				if (vs!='') {
+					$.post("{:url('visit')}", $(obj).serialize(), function(data) {
+						if(data.status==1){
+							alert_success("操作成功",function(){
+								location.reload();
+							});
+						}else{
+							alert_error(data.info);
+						}
+
+					});
+				}else{alert_error('请填写回复信息');}
+				return false;
+			}
+
+			function ct_time(tim) {
+				location.href="{:url('')}?zx_dateStart="+tim+"&zx_dateEnd="+tim;
+			}
+			function yy_time(tim) {
+				location.href="{:url('')}?yy_dateStart="+tim+"&yy_dateEnd="+tim;
+			}
+			function jz_time(tim) {
+				location.href="{:url('')}?dz_dateStart="+tim+"&dz_dateEnd="+tim;
+			}
+			function queryType(dt) {
+				var ty=$('#sltDateType').val();
+				parent.set_query_date(ty,dt);
+			}
+			$('.patient').click(function(event) {   
+				var _div=$(this).next();
+				$('.dis-n').not(_div).hide();
+				_div.toggle();  
+			});
+			$('#sltDateType').val("{:input('sltDateType')}");
+		</script>
+		{/block}

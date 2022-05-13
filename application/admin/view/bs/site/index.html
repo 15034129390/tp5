@@ -1,0 +1,64 @@
+{extend name="layout/list" /}
+{block name="body"}
+<div class="cl pd-5 bg-1 bk-gray"> 
+	<span class="l"> 
+		<a class="btn btn-primary radius" href="javascript:;" onclick="layer_show('添加站点','{:url("create")}','400','300')"><i class="Hui-iconfont">&#xe600;</i> 添加站点</a>
+	</span>
+	<span class="r">共有数据：<strong>{$lis|count}</strong>条</span>
+</div>
+
+<table class="table table-border table-bordered table-hover table-bg table-sort dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+	<thead>
+
+		<tr class="text-c" role="row">
+			<th >编号</th>
+			<th >站点名称</th>
+			<th >站点地址</th>
+			<th >排序</th>
+			<th >是否启用</th> 
+			<th >操作</th>
+		</tr>
+	</thead>
+	<tbody> 
+		{volist name='lis' id='item'}
+		<tr class="text-c odd" role="row"> 
+			<td>{$item.id}</td>
+			<td style="text-align: left;">{$item.name}</td>
+			<td>{$item.url}</td>
+			<td>{$item.weight}</td>
+			<td>
+				{eq name='item.status' value='1'}
+				<span class="label label-success radius">已启用</span>
+				{else/}
+				<span class="label radius">已停用</span>
+				{/eq}
+			</td>
+			<td class="f-14">
+				{eq name='item.status' value='1'}
+				<a  onclick="admin_stop('{$item.id}')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>
+				{else/}
+				<a  onclick="admin_start('{$item.id}')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i>
+				</a>
+				{/eq}
+				<a title="编辑" href="javascript:;" onclick="layer_show('编辑站点','{:url('edit?id='.$item['id'])}','400','300')" >
+					<i class="Hui-iconfont">&#xe6df;</i>
+				</a> 
+				<a title="删除" href="javascript:;" onclick="self_del('{$item.id}')" class="ml-5" ><i class="Hui-iconfont">&#xe6e2;</i>
+				</a>
+			</td>
+		</tr>
+		{/volist}
+	</tbody>
+</table>
+<script type="text/javascript">
+	function self_del(id){
+		common_opt('确定要删除当前站点吗？',id,"{:url('delete')}");
+	}
+	function admin_stop(id) {
+		common_opt('确认要停用吗？',id,"{:url('disable')}");
+	}
+	function admin_start(id) {
+		common_opt('确认要启用吗？',id,"{:url('recovery')}");
+	}
+</script>
+{/block}

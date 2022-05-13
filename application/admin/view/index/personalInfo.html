@@ -1,0 +1,29 @@
+<extend name="layout/list" />
+<block name="body">
+	<style type="text/css">
+		.text-r{
+			text-align: right!important;
+		}
+		.table{
+			line-height: 30px;
+			margin: 0px auto;
+			width: 500px;
+			border: 1px solid #eee;
+		}
+	</style>
+	<form class="form form-horizontal"   method="post" id="form-user-add" novalidate="novalidate">
+		<input type="hidden" name="id" value="{$info.id}"/>
+		<table class="table">
+			<tr><th class="text-r">账号：</th><td>{$info.login_name}</td></tr>
+			<tr><th class="text-r">姓名：</th><td>{$info.name}</td></tr>
+			<tr><th class="text-r">电话：</th><td>{$info.mobile}</td></tr>
+			<tr><th class="text-r">邮箱：</th><td>{$info.email}</td></tr>
+			<tr><th class="text-r">注册日期：</th><td>{$info.create_time|date='Y-m-d H:i:s',###}</th></tr>
+			<tr><th class="text-r">最后登录日期：</th><td>{$info.last_login_time|date='Y-m-d H:i:s',###}</td></tr>
+			<tr><th class="text-r">最后登录IP：</th><td>{$info.last_login_ip}</td></tr>
+			<tr><th class="text-r">最后登录地址：</th><td>{$info.last_login_address}</td></tr>
+		</table>
+	</form>
+</block>
+<block name='js'>
+</block>

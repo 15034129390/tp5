@@ -1,0 +1,49 @@
+{extend name="layout/edit" /}
+{block name="body"} 
+
+<form action="{:url('update')}" method="post" class="form form-horizontal" id="main_form">
+	<input type="hidden" name="id" value="{$info.id}">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">方式名称：<span class="c-red">*</span></label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$info.name}" placeholder="方式名称"  name="name" datatype="*2-16" nullmsg="方式名称不能为空">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">权重：<span class="c-red">*</span></label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" value="{$info.weight}" class="input-text" value="99" placeholder="方式排序权重（值大在前）"  name="weight" >
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">父级方式：<span class="c-red">*</span></label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<span class="select-box" style="width:150px;">
+				<select class="select valid" id='sltPid' name="pid" size="1" aria-required="true" aria-invalid="false">
+					<option value="0">顶级方式</option>
+					{volist name='nodes' id='item'}
+					<option value="{$item.id}">&nbsp;&nbsp;{$item.title_show}</option>
+					{/volist}
+				</select>
+				<label id="adminRole-error" class="error valid" for="adminRole"></label>
+			</span>
+		</div>
+	</div>
+
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<button type="submit" class="btn btn-success radius" ><i class="icon-ok"></i> 确定</button>
+		</div>
+	</div>
+</form>
+{/block}
+{block name='js'}
+<script type="text/javascript">
+	$(function () {
+		//回绑数据
+		$('#sltPid').val("{$info.pid}");
+		ajaxForm('#main_form');
+
+	});
+</script>
+{/block}

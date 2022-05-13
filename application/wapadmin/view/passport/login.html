@@ -1,0 +1,25 @@
+{extend name="layout/layout" /}
+{block name='body'}
+<div class="am-g">
+	<div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+		<br/>
+		<form method="post" class="am-form">
+			<label>账号:</label>
+			<input type="text" name="card"/>
+			<br>
+			<label>登录密码:</label>
+			<input type="password" name="password"/>
+			<br>
+			<label class="am-checkbox">
+				<input type="checkbox" name="remember_me">
+				记住密码
+			</label>
+			<br>
+			<div class="am-cf">
+				<!-- <input type="submit" value="忘记密码 ^_^? " class="am-btn am-btn-default am-btn-sm am-fl"> -->
+				<input type="submit" value="登 录" class="am-btn am-btn-primary am-btn-block">
+			</div>
+		</form>
+	</div>
+</div>
+{/block}

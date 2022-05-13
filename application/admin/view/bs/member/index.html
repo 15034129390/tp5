@@ -1,0 +1,104 @@
+{extend name="layout/list" /}
+{block name="body"}
+<div class="page-container">
+	<form method="get">
+		<div class="text-c"> 
+			{literal}
+			日期范围：
+			<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'txt_search_datemax\')||\'%y-%M-%d\'}'})" id="txt_search_datemin" class="input-text Wdate" name="sdate" style="width:120px;"> - <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'txt_search_datemin\')}',maxDate:'%y-%M-%d'})" id="txt_search_datemax" class="input-text Wdate" style="width:120px;" name="edate" >
+			{/literal}
+			<input type="text" name="kw" id="txt_search_kw" placeholder="会员名称/卡号/手机号" style="width:250px" class="input-text">
+			<button name="" id="" class="btn btn-success radius" type="submit"><i class="Hui-iconfont"></i> 搜会员</button>
+		</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l"> 
+			<a class="btn btn-primary radius" onclick="open_full_win('会员登记','{:url("create")}','800','550')" >
+				<i class="Hui-iconfont"></i> 会员登记
+			</a>
+		</span>
+		<span class="r">共有数据：<strong>{$pageInfo->total()}</strong> 条</span> 
+	</div>
+	<div >
+		<div  class="dataTables_wrapper no-footer">
+			<table class="table table-border table-bordered table-hover table-bg table-sort dataTable no-footer" role="grid" >
+				<thead >
+					<tr class="text-c">
+						<th>卡号</th>
+						<th>姓名</th>
+						<th>手机</th> 
+						<th>性别</th> 
+						<th>通用金额</th>
+						<th>门诊余额</th>
+						<th>住院余额</th>
+						<th>状态</th>
+						<th>发卡单位</th>
+						<th>录入时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{volist name='pageInfo' id='itm'}  
+					<tr class="text-c odd" role="row"> 
+						<td><a href="" style="color:#06c">{$itm.card_no}</a></td>
+						<td>{$itm.name}</td>
+						<td>{$itm.phone}</td> 
+						<td>
+							{switch name="itm.gender"}
+							{case value="1"}男{/case}
+							{case value="2"}女{/case}
+							{default/}保密
+							{/switch}
+						</td>
+						<td>￥{$itm.balance}</td>
+						<td>￥{$itm.mz_money}</td>
+						<td>￥{$itm.zy_money}</td>
+						<td>
+							{eq name='itm.status' value='1'}
+							<label class="label label-success radius">正常</label>
+							{else/}
+							<label class="label label-warning radius">冻结</label>
+							{/eq}
+						</td>
+						<td>{$itm.hname}</td>
+						<td>{$itm.create_time|date='Y-m-d H:i:s',###}</td> 
+						<td>
+							<a href="javascript:void(0);" onclick="layer_show('编辑','{:url('edit?id='.$itm['id'])}','800','500')" title="编辑"><i class="Hui-iconfont"></i>编辑</a>&nbsp;&nbsp;
+							<span href="" title="充值" onclick="layer_show('充值','{:url('bs.card/recharge?id='.$itm['id'])}','700','700')"><i class="Hui-iconfont">￥</i>充值</span>
+							<span title="收费" onclick="layer_show('收费','{:url('bs.card/charge?id='.$itm['id'])}','700','760')"><i class="Hui-iconfont">￥</i>收费</span>
+							<a title="日志" onclick="open_full_win('(消费/充值)日志','{:url('log?id='.$itm['id'])}');" href="javascript:void(0);">
+								<i class="Hui-iconfont">￥</i>
+								日志
+							</a>
+
+							<a title="删除" href="javascript:void();" onclick="self_del('{$itm.id}')" class="ml-5"  >
+								<i class="Hui-iconfont">&#xe6e2;</i>删除
+							</a>
+						</td>
+					</tr>
+					{/volist}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+	{$pageInfo->render()} 
+	{/block}
+	{block name="js"}
+	{js href='__STATIC__H-ui/lib/My97DatePicker/WdatePicker.js'/}
+	<script type="text/javascript">
+		function admin_stop(id) {
+			common_opt('确认要停用吗？',id,"{:url('disable')}");
+		}
+		function admin_start(id) {
+			common_opt('确认要启用吗？',id,"{:url('recovery')}");
+		}
+		function self_del(id){
+			common_opt('确定要删除当前会员吗？',id,"{:url('delete')}");
+		}
+		$('#txt_search_datemin').val('{:input('get.sdate')}');
+		$('#txt_search_datemax').val('{:input('get.edate')}');
+		$('#txt_search_kw').val('{:input('get.kw')}');
+
+	</script>
+	{/block}

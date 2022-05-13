@@ -1,0 +1,37 @@
+{include file="layout:_head" /}
+<style type="text/css">
+	#nav_man{
+		width: 100%;
+		background-color: rgba(245,245,245,1);
+		padding-bottom: 20px;
+	}
+	#nav_man_head{
+		padding: 20px;
+	}
+	#nav_man_head_img{
+		float: left;
+		width: 84px;
+	}
+	#nav_man_head_des{
+		padding-left: 10px;
+		margin-left: 84px;
+		line-height: 28px;
+	}
+	.am-pagination{
+		padding: 10px;
+	}
+	.am-icon-sign-out{
+		color: #FF9599;
+	}
+</style>
+{block name="css"}{/block}
+</head>
+<body>
+	{include file="layout:_header" /}
+	{block name='body'}{/block}
+	{include file="layout:_footer" /}
+	<script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+	{block name="js"}{/block}
+</body>
+</html>

@@ -1,0 +1,202 @@
+{extend name="layout/edit" /}
+{block name="body"}
+<style type="text/css">
+	.mplan{padding: 10px 30px;}
+	.mplan span{color: red;font-weight: bold;margin-right: 15px;font-size: 16px;}
+	.center td{text-align: center;}
+	.sfei{color: red;font-weight: bold;font-size: 16px;border: 0;}
+	.inline{display: inline-block;}
+</style>
+<div class="inline">
+	<div class="panel panel-success mt-20">
+		<div class="panel-header">会员卡信息</div>
+		<div class="panel-body">
+			<form action="" class="form form-horizontal" id="fmember">
+				<div class="row cl">
+					<label class="form-label f-l"  style="margin-left:30px;">卡号：</label>
+					<div class="f-l" style="display:block">
+						<input type="text" id="mcard" required class="input-text f-l" style="width:200px;"  placeholder="请输入卡号">
+						<input type="submit" class="btn btn-primary f-l"  value="搜索">
+					</div>
+				</div>
+			</form>
+
+			<div class="mplan">
+				姓名：<span id="mname"></span>
+				通用金额：<span id="myue" data-m='0'>0</span>
+				门诊余额：<span id="mzye" data-m='0'>0</span>
+				住院余额：<span id="zyye" data-m='0'>0</span>
+				<a href="javascript:openMember();" style="color:#06c">会员信息</a> 
+			</div>
+			
+		</div>
+
+	</div>
+	<div class="panel panel-secondary">
+		<div class="panel-header">收费明细</div>
+		<div class="panel-body">
+			<div class="page-container">
+				<form action="" class="form form-horizontal" id="Charge">
+					<input type="hidden" name="card_no" id="card_no">
+					<input type="hidden" name="mz_money" id="mzmy">
+					<input type="hidden" name="zy_money" id="zymy">
+					<input type="hidden" name="money" id="money">
+					<input type="hidden" name="update_time" id="update_time">
+					<div class="row cl">
+						<label class="form-label f-l" style="width:100px">密码：</label>
+						<div class="formControls f-l" style="width:150px;">
+							<input type="password" name="pass" class="input-text"  >
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label f-l" style="width:100px">门诊消费：</label>
+						<div class="formControls f-l" style="width:150px;">
+							<input type="text" class="input-text"  onkeyup="shoufei(this)" id="mz_money" >
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label f-l" style="width:100px">住院消费：</label>
+						<div class="formControls f-l" style="width:150px;">
+							<input type="text" class="input-text"  onkeyup="shoufei(this)" id="zy_money">
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label f-l" style="width:100px">卡内扣费详情：</label>
+						<table class="table table-border table-bordered table-hover table-bg table-sort f-l center" style="width:300px;">
+							<tr><td>通用扣费</td><td>门诊扣费</td><td>住院扣费</td></tr>
+							<tr><td id="yeshow">0</td><td id="mzshow">0</td><td id="zyshow">0</td></tr>
+						</table>
+					</div>
+
+					<div class="row cl">
+						<label class="form-label f-l" style="width:100px">需支付现金：</label>
+						<div class="formControls f-l" style="width:150px;">
+							<input type="text" class="input-text sfei"  readonly="true" value="0" id="cash_money" name="cash_money">
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label  f-l" style="width:100px">备注：</label>
+						<div class="formControls  f-l"  style="width:250px;">
+							<textarea name="memo" cols="" rows="" class="textarea" placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onkeyup="textarealength(this,200)"></textarea>
+							<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+						</div>
+					</div>
+					<div class="row cl"> 
+						<button onclick="article_save();" style="margin-left:100px;" class="btn btn-success radius" type="button">结算</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name='js'}
+<script type="text/javascript">
+	function article_save() {
+		var boo=false;
+		$.each($('#Charge input'), function(i, itm) {
+			if ($(itm).val()!='') {boo=true;};
+		});
+		if (boo) {
+			$.post('{:url('charge')}', $('#Charge').serialize(), function(data) {
+				if (data.status==1) {
+					alert_success(data.info,function(){
+						location.reload();close_win();
+					});
+				}else{
+					alert_error(data.info);
+				}
+			});
+		};
+		return false;
+	}
+	var str='<div class="mplan" style="width:450px"><table class="table table-border table-bordered table-bg table-hover table-sort dataTable no-footer"><tr><td>姓名：</td><td>[1]</td><td>余额：</td><td>[2]</td></tr><tr><td>门诊余额：</td><td>[7]</td><td>住院余额：</td><td>[8]</td></tr><tr><td>累计充值金额：</td><td>[3]</td><td>累积消费金额：</td><td>[4]</td></tr><tr><td>联系电话：</td><td>[5]</td><td>身份证：</td><td>[6]</td></tr></table></div>';
+	var _html=''; 
+	var umboo=false;
+	$('#fmember').submit(function(event) {
+		$('.mplan span').html('');
+		umboo=false;
+		_html=str;
+		$.post('{:url('getcode')}', {'card': $('#mcard').val()}, function(data) {
+			if (data.status==1) { 
+				$('#update_time').val(data.data.uptime);
+				$('#card_no').val(data.data.card_no);
+				$('#mname').html(data.data.name);
+				$('#myue').html(data.data.balance/100).prop('data-m', data.data.balance);
+				$('#mzye').html(data.data.mz_money/100).prop('data-m', data.data.mz_money);
+				$('#zyye').html(data.data.zy_money/100).prop('data-m', data.data.zy_money);
+				_html=_html.replace('[1]',data.data.name).replace('[2]',data.data.balance/100).replace('[3]','0').replace('[4]','0').replace('[5]',data.data.phone).replace('[6]',data.data.idcard).replace('[7]',data.data.mz_money/100).replace('[8]',data.data.zy_money/100);
+				umboo=true;
+			}else{
+				alert_error(data.info);
+			}
+		});
+		return false;
+	});
+	function openMember() {
+		if (umboo) {
+			layer.open({
+				type: 1,
+				skin: 'layui-layer-rim',
+				title:'会员信息',  
+				area: ['520px', '240px'], 
+				content: _html
+			});
+		}; 
+	}
+	function shoufei(obj) {
+		$(obj).val($(obj).val().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')); 
+		if (umboo) {
+			//当前卡内门诊费用
+			var mzye=parseFloat($('#mzye').prop('data-m')!=''?$('#mzye').prop('data-m'):0);
+			//当前卡内住院费用
+			var zyye=parseFloat($('#zyye').prop('data-m')!=''?$('#zyye').prop('data-m'):0); 
+			var myue=parseFloat($('#myue').prop('data-m')!=''?$('#myue').prop('data-m'):0);
+
+			var mz=$('#mz_money');
+			var zy=$('#zy_money');//住院消费
+			var allm=0;
+			if (mz.val()>0) {
+				var mz1=parseFloat(mz.val())*100;//门诊消费
+				if (mz1>mzye) {
+					var mx1=Math.formatFloat(mz1-mzye);
+					allm+=mx1;
+					$('#mzmy').val(mzye/100);
+					$('#mzshow').html(mzye/100);
+				}else{ 
+					$('#mzmy').val(mz1/100);
+					$('#mzshow').html(mz1/100);
+				}
+			}
+			if (zy.val()>0) {
+				var zy1=parseFloat(zy.val())*100;
+
+				if (zy1>zyye) {
+					var mx2=Math.formatFloat(zy1-zyye);
+					allm+=mx2;
+					$('#zymy').val(zyye/100);
+					$('#zyshow').html(zyye/100);
+				}else{ 
+					$('#zymy').val(zy1/100);
+					$('#zyshow').html(zy1/100);
+				}
+
+			};  
+			if (allm>myue) {
+				$('#money').val(myue/100); 
+				$('#yeshow').html(myue/100)
+				$('#cash_money').val((allm-myue)/100);
+			}else{ 
+				$('#money').val(allm/100);
+				$('#yeshow').html(allm/100) 
+				$('#cash_money').val(0);
+			}
+		};
+	}
+
+	Math.formatFloat = function(f) { 
+		var m = Math.pow(10, 4); 
+		return parseInt(f * m, 10) / m; 
+	} 
+</script>
+{/block}

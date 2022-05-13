@@ -1,0 +1,122 @@
+{extend name="layout/edit" /}
+{block name="body"}
+<style type="text/css">
+	.form-label{
+		padding: 0px;
+	}
+	label.error{
+		top:0;
+	}
+	.option_content_info{
+		width:800px;
+		margin: 0px auto;
+	}
+</style>
+<form class="form form-horizontal " action="{:url('save')}" id="main_form" method="post">
+	<div class="text-c">
+		<input type="text" name="kw" id="txt_search_kw" placeholder="卡号" style="width:250px" class="input-text">
+		<button name="" id="" class="btn btn-success radius" type="submit"><i class="Hui-iconfont"></i> 搜卡号</button>
+	</div>
+</form>
+<form class="form form-horizontal " action="{:url('save')}" id="main_form" method="post">
+	<div class="option_content_info">
+		<div class="col-xs-12 mt-20" >
+			<div class="panel panel-default">
+				<div class="panel-header">卡号信息</div>
+				<div class="panel-body">
+					<input type="hidden" name="id" />
+					<div class="row cl">
+						<label class="form-label col-xs-2">卡号：</label>
+						<div class="formControls col-xs-4">
+							<span id="txtCode"></span>
+						</div>
+						<label class="form-label col-xs-2">会员名称：</label>
+						<div class="formControls col-xs-4">
+							<span id="txtPassword"></span>
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label col-xs-2">手机号：</label>
+						<div class="formControls col-xs-4">
+							<span id="txtPhone"></span>
+						</div>
+						<label class="form-label col-xs-2">账户余额：</label>
+						<div class="formControls col-xs-4">
+							<span id="txtBalance"></span>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-2">消费金额：</label>
+				<div class="formControls col-xs-4">
+					<input type="text" class="input-text" name="money"/>
+				</div>
+				<label class="form-label col-xs-2">密码：</label>
+				<div class="formControls col-xs-4">
+					<input type="password" class="input-text" id="code-pw" placeholder="密码" name="pass"/>
+				</div> 
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2 text-c mt-20"> 
+				<button id="btnSubmit" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont"></i> 保存</button> 
+			</div>
+		</div>
+	</div>
+</form>
+{/block}
+{block name='js'}
+{js href='/static/H-ui/lib/icheck/jquery.icheck.min.js'/}
+{js href='__STATIC__H-ui/lib/My97DatePicker/WdatePicker.js'/}
+{js href='__STATIC__H-ui/lib/Validform_v5.3.2_min.js'/}
+{js href='/static/area.js'/}
+{js href='/static/ajax.js'/}
+<script type="text/javascript">
+
+	$('#code').keydown(function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0]; 
+		if(e && e.keyCode==13){  
+			$.post('{:url('check_code')}', {'code': $(this).val()}, function(data) {
+				if(data.status==1){
+					$('#code-pw').focus();
+				}else{
+					alert_error(data.info);
+				}
+			}); 
+			e.stopPropagation();
+			return false; 
+		}
+	});
+	$('#code-pw').keydown(function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0]; 
+		if(e && e.keyCode==13){  
+			$('#code-pw2').focus();
+			e.stopPropagation();
+			return false; 
+		}
+
+	});
+	$('#code-pw2').keydown(function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0]; 
+		if(e && e.keyCode==13){  
+			if ($('#code-pw2').val()!==$('#code-pw').val()) {
+				alert_error('两次密码输入不同');
+				return false;
+			};
+		}
+	});
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	BsArea($('#sltProvince'),$('#sltCity'));
+	$('#btnSubmit').click(function(event) {
+		$('#main_form').submit();
+	});
+	ajaxForm("#main_form");
+</script>
+{/block}

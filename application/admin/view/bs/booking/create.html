@@ -1,0 +1,379 @@
+{extend name="layout/list" /}
+{block name="body"}
+<style type="text/css">
+	.form-label{
+		padding: 0px;
+	}
+	label.error{
+		top:0;
+	}
+</style>
+<form class="form form-horizontal" action="{:url('save')}" id="main_form" method="post">
+	<div class="row cl">
+		<label class="form-label col-xs-2"><span class="c-red">*</span>挂号类别：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" value="" placeholder="挂号人类别" name="name" datatype="*1-16" required  nullmsg="挂号类别不能为空" errormsg='挂号类别至少1个字符,最多16个字符！'/>
+		</div>
+		<label class="form-label col-xs-2">使用时间：</label>
+		<div class="formControls col-xs-4">
+			<input type="text"   class="input-text" placeholder="使用时间" name="age" />
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">真实姓名：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" placeholder="真实姓名" name="zname" />
+		</div> 
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">咨询人性别：</label>
+		<div class="formControls col-xs-4  skin-minimal">
+			<div class="radio-box">
+				<input type="radio" value="1" name="gender" id="gender-1" checked>
+				<label for="gender-1">男</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" value="2" name="gender" id="gender-2" >
+				<label for="gender-2">女</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" value="0" name="gender" id="gender-3" >
+				<label for="gender-3">保密</label>
+			</div>
+		</div>
+		<label class="form-label col-xs-2"><span class="c-red">*</span>联系电话：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" value="" placeholder="联系电话" name="mobile" id="mobile" onblur="mcheck()"/>
+			<label class="Validform_checktip error Validform_right" id='dhx'></label>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">座机号码：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" value="" placeholder="座机号码" name="phone" />
+		</div>
+
+		<label class="form-label col-xs-2">预约时间：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text Wdate" value="" placeholder="预约时间" name="yy_time" onblur="times()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+		</div> 
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2"><span class="c-red">*</span>品牌：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" name="department_id" id="sltDepartmentId">
+					<option value="0">==请选择==</option>
+				</select>
+			</span>
+		</div>
+		<label class="form-label col-xs-2"><span class="c-red">*</span>故障类别：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" name="disease_id" id="sltDiseaseId">
+					<option value="0">==请选择==</option>
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2"><span class="c-red">*</span>来源媒体：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" name="consultation_way_id" id="sltConsultationWayId">
+					<option value="0">==请选择==</option>
+				</select>
+			</span>
+		</div>
+		<label class="form-label col-xs-2">预约方式：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" name="appointment_mode_id" id="sltConsultationWayIdd">
+					<option value="0">==请选择==</option>
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">身份证：</label>
+		<div class="formControls col-xs-4">
+			<input type="text"   class="input-text" placeholder="身份证" name="idcard" />
+		</div>
+		<label class="form-label col-xs-2">来店方式：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" id="sltComeWayId" name='come_way_id' >
+					<option value="0">==请选择==</option>
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">职业：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" value="" placeholder="职业" name="profession" />
+		</div>
+		<label class="form-label col-xs-2">预约技师：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" id='sltDoctorId' name="yy_doctor_id" >
+					<option value="0">--选择挂号技师--</option>
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">所属省份：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" id="sltProvince" name="province_id"  >
+					
+				</select>
+			</span>
+		</div>
+		<label class="form-label col-xs-2">所在市区：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" id="sltCity" name="city_id">
+
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">详细地址：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" value="" placeholder="详细地址" name="address" />
+		</div>
+		<label class="form-label col-xs-2">咨询客服：</label>
+		<div class="formControls col-xs-4">
+			{auth value='Can_you_add_another_customer_service_reservation_information'}
+			<span class="select-box">
+				<select class="select" did='{:ADMIN_ID}' name="custom_service_id" id="sltCustomServiceId">
+
+				</select>
+			</span>
+			{else/}
+			<input type="hidden" value="{:ADMIN_ID}" name="custom_service_id"/>
+			{:session('AdminInfo.name')}
+			{/auth}
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">故障描述：</label>
+		<div class="formControls col-xs-10">
+			<textarea class="textarea" name="disease_desc"></textarea>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">商务通信息：</label>
+		<div class="formControls col-xs-10">
+			<textarea class="textarea" name="swt" onblur="info(this)" id="zoos"></textarea>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">其他备注：</label>
+		<div class="formControls col-xs-10">
+			<textarea class="textarea" name="remark"></textarea>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">来源网站：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" name="source_site_id" id="sltSourceSiteId">
+					<option value="0">==请选择==</option>
+				</select>
+			</span>
+
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">IP地址：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" id="ip2" placeholder="IP地址" name="source_ip" />
+		</div>
+		<label class="form-label col-xs-2">状态：</label>
+		<div class="formControls col-xs-4">
+			<span class="select-box">
+				<select class="select" name="status" id="sltStatusId">
+					<option value="1">登记</option>
+					<option value="2">预约</option>
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-2">咨询页面：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" id="zpage" placeholder="咨询页面" name="source_consulting_page" />
+		</div>
+		<label class="form-label col-xs-2">搜索关键词：</label>
+		<div class="formControls col-xs-4">
+			<input type="text" class="input-text" id="keyword" placeholder="搜索关键词" name="source_search_keywords" />
+		</div>
+	</div>
+	<div class="btn-group mt-50" style="text-align: center;">
+		<button class="btn btn-primary radius">添加顾客信息</button> 
+	</div>
+</form>
+{/block}
+{block name='js'}
+{js href='/static/H-ui/lib/icheck/jquery.icheck.min.js'/}
+{js href='__STATIC__H-ui/lib/My97DatePicker/WdatePicker.js'/}
+{js href='__STATIC__H-ui/lib/Validform_v5.3.2_min.js'/}
+{js href='/static/area.js'/}
+{js href='/static/ajax.js'/}
+<script type="text/javascript">
+	/*检测是否预约 如果预约则状态改为预约*/
+	function times(){
+		var Wdate = $('.Wdate').val();
+		if (Wdate != '') {
+			$('#sltStatusId').val('2');
+		}else{
+			$('#sltStatusId').val('1');
+		}
+	}
+	/*判断电话号码是否存在*/
+	function mcheck(){
+	    var mobile=$('#mobile').val();
+	    if(mobile!=''){ 
+		$.post('{:url('mcheck')}', {'mobile': mobile}, function(data) {
+			if(data) {
+				$('#dhx').html("").append('改电话号码已存在！');
+			}else{
+				$('#dhx').html("").append('验证通过!');
+			}
+		});
+		}
+   }
+	function Items(id) {Frame('Site/Item.php?id='+id);}
+	function City(id) {Frame('Site/City.php?id='+id);}
+	function chkName(nm){ if(nm!='') Frame('Sick.Action.php?site=23&action=name&name='+nm);}
+	function chkTel(nm){if(nm!='') Frame('Sick.Action.php?site=23&action=telck&tel='+nm);}
+	function artName() { alert('此挂号顾客姓名已存在，是否继续提交挂号？');}
+	function artTel()  { alert('此挂号电话号码已存在，是否继续提交挂号？');}
+	function _(name,n) {if(n==undefined) n=0;return document.getElementsByName(name)[n];}
+	function Frame(src){
+		var Fr = document.createElement("iframe");
+		Fr.src = src;
+		document.body.appendChild(Fr);
+	}
+	function info(obj){
+		if(obj.value!=''){
+			var arr = String(obj.value).split('\n');
+			for(line in arr){
+				Set(arr[line],'当前网页','zpage');
+				Sel(arr[line],'当前网页','sltSourceSiteId');
+				Set(arr[line],'搜索引擎关键词','keyword');
+				Set(arr[line],'IP:','ip2');
+				Sel(arr[line],'来源网页','sltSourceId');
+			}
+		}
+	}
+	function Get(id){return document.getElementById(id);}
+	function Set(s,r,t){
+		if(s.indexOf(r)!=-1)
+			Get(t).value = s.replace(r,'').replace(':','').replace('：','').replace('\r','').split('?bdclkid')[0];
+	}
+	function Sel(s,r,o){
+		if(s.indexOf(r)!=-1){
+			var objItemValue = s.replace(r,'').replace(':','').replace('：','').replace('\r','').replace(/http:\/\//ig,'').replace(/https:\/\//ig,'');
+			objItemValue = objItemValue.split('/')[0];
+			var objSelect = Get(o);
+			var isValue = false;
+			for(var i=0;i<objSelect.options.length;i++){
+				if(objSelect.options[i].text == objItemValue){
+					objSelect.options[i].selected = true;
+					isValue = true;
+					break;
+				}
+			}
+			if(!isValue){
+				var url='{:url('bs.ajax/saveSource')}';
+				if(o=='sltSourceSiteId'){
+					url='{:url('bs.ajax/saveSite')}';
+				}
+				$.post(url, {'site': objItemValue}, function(data) {
+					if(data.status==1){
+						if(data.data.is_add){
+							objSelect.options.add(new Option(data.data.name,data.data.id));
+							objSelect.options[objSelect.options.length-1].selected = true;
+						}else{
+							$('#'+o).val(data.data.id);
+						}
+						isSub = false;
+					}
+				}); 
+			}
+		}
+	}
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	window.ajax_tj_postonce=true;
+	var ajaxForm=function(slt,fuc){
+		if(window.ajax_tj_postonce){
+			window.ajax_tj_postonce=false;
+		}else{
+			return false;
+		}
+		if(fuc==undefined||fuc==null){
+			fuc=close_win;
+		}
+		$(slt).Validform({
+			'tiptype':function(msg,o,cssctl){
+			//console.info(msg);
+			if(o.obj.siblings(".Validform_checktip").length==0){
+				o.obj.parent().append('<label class="Validform_checktip error">'+msg+'</label>');
+			}else{
+				o.obj.siblings(".Validform_checktip").html(msg);
+			}
+			cssctl(o.obj.siblings(".Validform_checktip"),o.type);
+		},
+		'postonce':true,
+		'ajaxPost':true,
+		beforeSubmit:function(curform){
+			if ($('#sltSourceId').val()==0) {
+				alert('请选择来源媒体');
+				return false;
+			} 
+		},
+		callback:function(d){
+			if(d.status==1){
+				alert_success(d.info,fuc);
+			}else{
+				window.ajax_tj_postonce=true;
+				alert_error(d.info);
+			}
+			return false;
+		}
+	});
+	}
+	$(function () {
+		BS_Ajax.site($('#sltSourceSiteId'),true);
+		BS_Ajax.source($('#sltSourceId'),true);
+		BS_Ajax.customService($('#sltCustomServiceId'),true,function ($slt,data) {
+			if(data.length==1){
+				var pspan=$slt.parent();
+				var pdiv=pspan.parnet();
+				pspan.remove();
+				pdiv.append('<input type="hidden" name="custom_service_id" value="'+data[0].id+'" /><span>'+data[0].name+'</span>');
+			}
+		});
+		BS_Ajax.doctor($('#sltDoctorId'),true);
+		BS_Ajax.depDisease($('#sltDepartmentId'),$('#sltDiseaseId'),true);
+		BS_Ajax.depconsultationWay($('#sltConsultationWayId'),$('#sltConsultationWayIdd'),true);
+		BS_Ajax.comeWay($('#sltComeWayId'),true);
+		ajaxForm("#main_form");
+		
+		
+	});
+	var close_win=function () {
+		location.href="{:url('index')}";
+	};
+BsArea($('#sltProvince'),$('#sltCity'));//绑定地区
+</script>
+{/block}

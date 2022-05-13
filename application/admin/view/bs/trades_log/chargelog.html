@@ -1,0 +1,135 @@
+{extend name="layout/list" /}
+{block name="body"}
+<style type="text/css">
+	.zhichu td{color: red;}
+	.chongzhi td{color:#19a97b;}
+</style>
+<div class="page-container">
+	<form method="get" id="formQuery">
+		<div class="text-c"> 
+			{literal}
+			日期范围：
+			<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'txt_search_datemax\')||\'%y-%M-%d\'}'})" id="txt_search_datemin" class="input-text Wdate" name="sdate" style="width:120px;"> - <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'txt_search_datemin\')}',maxDate:'%y-%M-%d'})" id="txt_search_datemax" class="input-text Wdate" style="width:120px;" name="edate" >
+			{/literal}
+			<input type="text" name="kw" id="txt_search_kw" placeholder="会员名称/卡号" style="width:250px" class="input-text">
+			<button name="" id="" class="btn btn-success radius" type="submit"><i class="Hui-iconfont"></i> 搜记录</button>
+		</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			
+			<input class="btn btn-link radius" onclick="locData.getToday(setDate);" type="button" value="今天">/
+			<input class="btn btn-link radius" onclick="locData.getYesterday(setDate);" type="button" value="昨天">/
+			<input class="btn btn-link radius" onclick="locData.getWeek(setDate);" type="button" value="本周">/
+			<input class="btn btn-link radius" onclick="locData.getLast7Days(setDate);" type="button" value="近七天">/
+			<input class="btn btn-link radius" onclick="locData.getLastWeek(setDate);" type="button" value="上周">/
+			<input class="btn btn-link radius" onclick="locData.getMonth(setDate);" type="button" value="本月">/
+			<input class="btn btn-link radius" onclick="locData.getLastMonth(setDate);" type="button" value="上月">
+		</span>
+		<span class="r">
+			<form method="get" style="display: inline-block;">
+				<input type="hidden" name="qt" value="ex">
+				<button name="" id="" class="btn btn-success radius" type="submit">导出结果</button>
+			</form>
+			共有数据：<strong>{$pageInfo->total()}</strong> 条</span> 
+		</div>
+		<div >
+			<div  class="dataTables_wrapper no-footer">
+				<table class="table table-border table-bordered table-hover table-bg table-sort dataTable no-footer" role="grid" >
+					<thead >
+						<tr class="text-c">
+							<th>会员卡号</th>
+							<th>会员姓名</th>
+							<th>日志类型</th>
+							<th>通用金额</th> 
+							<th>门诊金额</th>
+							<th>住院金额</th>
+							<th>现金金额</th>
+							<th>操作时间</th>
+							<th>操作单位</th>
+							<th>备注</th> 
+						</tr>
+					</thead>
+					<tbody> 
+						{volist name='pageInfo' id='item'}
+						<tr class="text-c odd {switch name="item.direction"}
+						{case value="1"}zhichu{/case}
+						{case value="2"}chongzhi{/case}
+						{/switch}" role="row"> 
+						<td>{$item.card_no}</td>
+						<td>{$item.name}</td>
+						<td> 
+							{switch name="item.direction"}
+							{case value="1"}<label>支出</label>{/case}
+							{case value="2"}<label>充值</label>{/case}
+							{/switch}
+						</td>  
+						<td>{switch name="item.direction"}
+							{case value="1"}-{/case}
+							{case value="2"}+{/case}
+							{/switch}￥{$item.money|def='0'}</td>
+							<td>{switch name="item.direction"}
+								{case value="1"}-{/case}
+								{case value="2"}+{/case}
+								{/switch}￥{$item.mz_money|def='0'}</td>
+								<td>{switch name="item.direction"}
+									{case value="1"}-{/case}
+									{case value="2"}+{/case}
+									{/switch}￥{$item.zy_money|def='0'}</td>
+									<td>{switch name="item.direction"}
+										{case value="1"}-{/case}
+										{case value="2"}+{/case}
+										{/switch}￥{$item.cash_money|def='0'}</td>
+										<td>{$item.create_time|date='Y-m-d H:i:s',###}</td>
+										<td>{$item.hospital_name}-{$item.user_name}</td>
+										<td>
+											{$item.memo}
+										</td>
+									</tr>
+									{/volist}
+									<tr>
+										<th colspan="3">总计</th>
+										<td>
+											￥{$tj.money|def='0'}
+										</td>
+										<td>
+											￥{$tj.mz_money|def='0'}
+										</td>
+										<td>
+											￥{$tj.zy_money|def='0'}
+										</td>
+										<td>
+											￥{$tj.cash_money|def='0'}
+										</td>
+										<td colspan="3"></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+					{$pageInfo->render()} 
+					{/block}
+					{block name="js"}
+					{js href='__STATIC__H-ui/lib/My97DatePicker/WdatePicker.js'/}
+					{js href='/static/time.js'/}
+					<script type="text/javascript">
+						function admin_stop(id) {
+							common_opt('确认要停用吗？',id,"{:url('disable')}");
+						}
+						function admin_start(id) {
+							common_opt('确认要启用吗？',id,"{:url('recovery')}");
+						}
+						function self_del(id){
+							common_opt('确定要删除当前会员吗？',id,"{:url('delete')}");
+						}
+						$('#txt_search_datemin').val('{:input('get.sdate')}');
+						$('#txt_search_datemax').val('{:input('get.edate')}');
+						$('#txt_search_kw').val('{:input('get.kw')}');
+						function setDate(sdate,edate) {
+							$('#txt_search_datemin').val(sdate);
+							$('#txt_search_datemax').val(edate);
+							$('#formQuery').submit();
+						}
+					</script>
+					{/block}

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<LINK rel="Bookmark" href="/favicon.ico" >
+		<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+{js href="/static/H-ui/lib/html5.js,/static/H-ui/lib/respond.min.js,/static/H-ui/lib/PIE_IE678.js"/}
+<![endif]-->
+{css href="/static/H-ui/static/h-ui/css/H-ui.min.css,/static/H-ui/static/h-ui/css/H-ui.admin.css,/static/H-ui/static/h-ui/css/style.css,/static/H-ui/lib/Hui-iconfont/1.0.7/iconfont.css"/}
+{php}$skin=getSkin();{/php}
+<link rel="stylesheet" type="text/css" href="/static/H-ui/static/h-ui/skin/{$skin|default='default'}/skin.css" id="skin" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+</head>
+<body class="big-page">
+	{include file="layout:_nav" /}
+	{include file="layout:_menu" /}
+	<section class="Hui-article-box">
+		<div id="Hui-tabNav" class="Hui-tabNav hidden-xs">
+			<div class="Hui-tabNav-wp">
+				<ul id="min_title_list" class="acrossTab cl">
+					<li class="active"><span title="我的桌面" data-href="{:url('bs.booking/index')}">我的桌面</span><em></em></li>
+				</ul>
+			</div>
+			<div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a><a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a></div>
+		</div>
+		<div id="iframe_box" class="Hui-article">
+			<div class="show_iframe">
+				<div style="display:none" class="loading"></div>
+				<iframe scrolling="yes" name='content_ifram' id="content_ifram" frameborder="0" src="{:url('welcome')}"></iframe>
+			</div>
+		</div>
+	</section>
+	{js href='/static/H-ui/lib/jquery/1.9.1/jquery.min.js,/static/H-ui/static/h-ui/js/H-ui.js,/static/H-ui/static/h-ui/js/H-ui.admin.js,/static/H-ui/lib/layer/2.1/layer.js'}
+	<script type="text/javascript">
+		/*换肤*/
+		$("#Hui-skin .dropDown-menu a").click(function(){
+			var v = $(this).attr("data-val");
+			setCookie("Huiskin", v);
+			var hrefStr=$("#skin").attr("href");
+			var hrefRes=hrefStr.substring(0,hrefStr.lastIndexOf('skin/'))+'skin/'+v+'/skin.css';
+			$(window.frames.document).contents().find("#skin").attr("href",hrefRes);
+			$.post("{:url('Index/setSkin')}", {'skin': v}, function(d) {});
+		});
+		/*项目*/
+		$('#slt_nav_hospital').change(function(){
+			$.post("{:url('Index/changeHospital')}", {'id': this.value}, function(d) {
+				if(d.status==1){
+					location.reload();
+					//document.getElementById('content_ifram').contentWindow.location.reload(true);
+					// $fms=$('#iframe_box iframe');
+					// for (var i = 0; i < $fms.length; i++) {
+					// 	$fms[i].contentWindow.location.reload(true);
+					// }
+				}else{
+					alert('修改失败');
+				}
+			});
+		}).val("{:HID}");
+		$(function (argument) {
+			$('.menu_dropdown>dl>dt:first').click();
+		});
+		var iframe_window;
+		var refresh_iframe=function () {
+			iframe_window.location.reload();
+		}
+		function parent_layer_show(name,url,width,height,iframe_win) {
+			iframe_window=iframe_win;
+			layer_show(name,url,width,height);
+		}
+		
+		if(localStorage&&localStorage.hasOwnProperty('nav_menu_option')){
+			var is_option = localStorage.getItem("nav_menu_option");
+			if(is_option=='0'){
+				displaynavbar($('#_displaynavbar_a').get(0));
+			}
+		}else{
+			displaynavbar($('#_displaynavbar_a').get(0));
+		}
+		function _displaynavbar(obj){
+			if($(obj).hasClass("open")){
+				if(localStorage){
+					localStorage.setItem("nav_menu_option", "0");
+				}
+				$(obj).removeClass("open");
+				$("body").removeClass("big-page");
+			}else{
+				if(localStorage){
+					localStorage.setItem("nav_menu_option", "1");
+				}
+				$(obj).addClass("open");
+				$("body").addClass("big-page");
+			}
+		}
+		
+	</script> 
+</body>
+</html>

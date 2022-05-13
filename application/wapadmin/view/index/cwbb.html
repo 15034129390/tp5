@@ -1,0 +1,142 @@
+{extend name="layout/base" /}
+
+{block name='body'}
+<style type="text/css">
+	.tjlist{
+		font-size: 12px;
+		background: #fff;
+		margin-top: 5px;
+		/*overflow-x:scroll;*/
+	}
+	.color1{color: red;}
+	.color2{color: #19a97b;}
+</style>
+
+<div class="am-panel am-panel-secondary">
+	<div class="am-panel-hd">总计</div>
+	<div class="am-panel-bd tjlist">
+		<table class="am-table am-table-bordered">
+			<thead>
+				<tr>
+					<th>医院</th>
+					<th>门诊费<br/>(充值/消费)</th>
+					<th>住院费<br/>(充值/消费)</th>
+					<th>通用<br/>(充值/消费)</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name='tjlis' id='item'}
+				<tr>
+					<th>{$item.short_name}</th>
+					<td><label class="color2">{$item.cmoney|def='0.00'}</label>/<label class="color1">{$item.xmoney|def='0.00'}</label></td>
+					<td><label class="color2">{$item.cmz|def='0.00'}</label>/<label class="color1">{$item.xmz|def='0.00'}</label></td>
+					<td><label class="color2">{$item.czy|def='0.00'}</label>/<label class="color1">{$item.xzy|def='0.00'}</label></td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="am-panel am-panel-secondary">
+	<div class="am-panel-hd">今天</div>
+	<div class="am-panel-bd tjlist">
+		<table class="am-table am-table-bordered">
+			<thead>
+				<tr>
+					<th>医院</th>
+					<th>门诊费<br/>(充值/消费)</th>
+					<th>住院费<br/>(充值/消费)</th>
+					<th>通用<br/>(充值/消费)</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name='tlis.d' id='item'}
+				<tr>
+					<th>{$item.short_name}</th>
+					<td><label class="color2">{$item.cmoney|def='0.00'}</label>/<label class="color1">{$item.xmoney|def='0.00'}</label></td>
+					<td><label class="color2">{$item.cmz|def='0.00'}</label>/<label class="color1">{$item.xmz|def='0.00'}</label></td>
+					<td><label class="color2">{$item.czy|def='0.00'}</label>/<label class="color1">{$item.xzy|def='0.00'}</label></td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="am-panel am-panel-secondary">
+	<div class="am-panel-hd">本周</div>
+	<div class="am-panel-bd tjlist">
+		<table class="am-table am-table-bordered">
+			<thead>
+				<tr>
+					<th>医院</th>
+					<th>门诊费<br/>(充值/消费)</th>
+					<th>住院费<br/>(充值/消费)</th>
+					<th>通用<br/>(充值/消费)</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name='tlis.w' id='item'}
+				<tr>
+					<th>{$item.short_name}</th>
+					<td><label class="color2">{$item.cmoney|def='0.00'}</label>/<label class="color1">{$item.xmoney|def='0.00'}</label></td>
+					<td><label class="color2">{$item.cmz|def='0.00'}</label>/<label class="color1">{$item.xmz|def='0.00'}</label></td>
+					<td><label class="color2">{$item.czy|def='0.00'}</label>/<label class="color1">{$item.xzy|def='0.00'}</label></td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="am-panel am-panel-secondary">
+	<div class="am-panel-hd">本月</div>
+	<div class="am-panel-bd tjlist">
+		<table class="am-table am-table-bordered">
+			<thead>
+				<tr>
+					<th>医院</th>
+					<th>门诊费<br/>(充值/消费)</th>
+					<th>住院费<br/>(充值/消费)</th>
+					<th>通用<br/>(充值/消费)</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name='tlis.m' id='item'}
+				<tr>
+					<th>{$item.short_name}</th>
+					<td><label class="color2">{$item.cmoney|def='0.00'}</label>/<label class="color1">{$item.xmoney|def='0.00'}</label></td>
+					<td><label class="color2">{$item.cmz|def='0.00'}</label>/<label class="color1">{$item.xmz|def='0.00'}</label></td>
+					<td><label class="color2">{$item.czy|def='0.00'}</label>/<label class="color1">{$item.xzy|def='0.00'}</label></td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="am-panel am-panel-secondary">
+	<div class="am-panel-hd">上月</div>
+	<div class="am-panel-bd tjlist">
+		<table class="am-table am-table-bordered">
+			<thead>
+				<tr>
+					<th>医院</th>
+					<th>门诊费<br/>(充值/消费)</th>
+					<th>住院费<br/>(充值/消费)</th>
+					<th>通用<br/>(充值/消费)</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name='tlis.lm' id='item'}
+				<tr>
+					<th>{$item.short_name}</th>
+					<td><label class="color2">{$item.cmoney|def='0.00'}</label>/<label class="color1">{$item.xmoney|def='0.00'}</label></td>
+					<td><label class="color2">{$item.cmz|def='0.00'}</label>/<label class="color1">{$item.xmz|def='0.00'}</label></td>
+					<td><label class="color2">{$item.czy|def='0.00'}</label>/<label class="color1">{$item.xzy|def='0.00'}</label></td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+{/block}
+{block name="js"}
+{/block}

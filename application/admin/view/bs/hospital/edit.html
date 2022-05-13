@@ -1,0 +1,32 @@
+{extend name="layout/edit" /}
+{block name="body"}
+<form action="{:url('update')}" method="post" class="form form-horizontal" id="main_form">
+	<input type="hidden" name="id" value="{$info.id}">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">项目名称：<span class="c-red">*</span></label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$info.name}" placeholder="项目名称"  name="name" datatype="*2-16" nullmsg="项目名称不能为空">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">排序：<span class="c-red">*</span></label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$info.weight}" placeholder="排序数组越大排序越靠前"  name="weight" datatype="*2-16" >
+		</div>
+	</div>
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<button type="submit" class="btn btn-success radius" >
+				<i class="icon-ok"></i>确定
+			</button>
+		</div>
+	</div>
+</form>
+{/block}
+{block name='js'}
+<script type="text/javascript">
+	$(function () {
+		ajaxForm('#main_form');
+	});
+</script>
+{/block}

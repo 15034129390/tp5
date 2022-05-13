@@ -1,0 +1,52 @@
+{extend name="layout/list" /}
+{block name="body"}
+<style type="text/css">
+	.page-container,table th,.table td{text-align: center;font-size: 15px;} 
+	table a{font-size: 18px;color: red;} 
+	.HuiTab{display: inline-block;} 
+	.mc{margin: 0 auto;}
+</style>
+<div class="page-container">
+	<div class="text-c"> 
+		<form action="" method="get">
+			<span class="select-box" style="width:150px">
+				<select class="select" id='sltYear' name="year" size="1">
+					<?php for ($i=date('Y'); $i > date('Y')-10; $i--) { 
+						?>
+						<option value="{$i}">{$i}年</option>
+						<?php 
+					}  ?>
+				</select>
+			</span>
+			<span class="select-box" style="width:150px">
+				<select class="select" id="sltMouth" name="mouth" size="1">
+					<?php for ($i=1; $i < 13; $i++) { 
+						?>
+						<option value="{$i}">{$i}月</option>
+						<?php 
+					}  ?>
+				</select>
+			</span>
+			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont"></i> 查看数据</button>
+		</form>
+	</div>
+	<table class="table table-border table-bordered mc" style="width:615px;">
+		<tr>
+			<th>数量</th>
+			<th>连接</th> 
+		</tr>
+		{volist name='lis' id='item'}
+		<tr>
+			<td>{$item.c}</td>
+			<td><a href='{$item.name}' target="_break">{$item.name}</a></td> 
+		</tr>
+		{/volist}
+	</table>
+</div>
+{/block}
+{block name='js'}
+<script type="text/javascript">
+	$('#sltYear').val('{:input('year',date('Y'))}');
+	$('#sltMouth').val('{:input('mouth',date('m'))}');
+</script>
+{/block}

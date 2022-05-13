@@ -1,0 +1,309 @@
+{extend name="layout/list" /}
+{block name="body"}
+<style type="text/css">
+	.text-c .form-label{
+		padding-left: 5px;
+		padding-right: 0px;
+	}
+	.text-c .formControls{
+		padding-left: 0px;
+		padding-right: 5px;
+	}
+	.text-c .row{
+		margin-bottom: 5px;
+	}
+	
+	iframe{width: 100%;height: 500px;border: 0;}
+</style>
+<div class="text-c"> 
+	<form method="get" id='formQuery' action="{:url('form')}" target="booking_index">
+		<ul id="Huifold4" class="Huifold">
+			<li class="item">
+				<div class="info" style="display: none;">
+					<div class="row cl">
+						<label class="form-label col-xs-1">咨询客服：</label>
+						<div class="formControls col-xs-2">
+							<span class="select-box">
+								<select class="select" did="{:input('get.kf_id')}" name="kf_id" id="sltCustomServiceId">
+									<option value="0">--所有--</option>
+								</select>
+							</span>
+						</div>
+						<label class="form-label col-xs-1">所属品牌：</label>
+						<div class="formControls col-xs-2">
+							<span class="select-box">
+								<select class="select" did="{:input('get.department_id')}" name="department_id" id="sltDepartmentId">
+									<option value="0">--所有--</option>
+								</select>
+							</span></div>
+							<label class="form-label col-xs-1">故障类别：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" did="{:input('get.bz_id')}" name="bz_id" id="sltDiseaseId">
+										<option value="0">--所有--</option>
+									</select>
+								</span>
+							</div>
+							<label class="form-label col-xs-1">到店状态：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select"  name="dz_status" id="sltDzStatus">
+										<option value="0" selected="">所有状态</option>
+										<option value="1">仅登记</option>
+										<option value="2">已预约</option>
+										<option value="3">已到店</option>
+										<option value="4">未到店</option>
+									</select>
+								</span>
+							</div>
+						</div>
+						<div class="row cl">
+							<label class="form-label col-xs-1">来源媒体：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" did="{:input('get.way_id')}" name="way_id" id="sltConsultationWayId">
+										<option value="0">--所有--</option>
+									</select>
+								</span>
+							</div>
+							<label class="form-label col-xs-1">预约方式：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" did="{:input('get.ly_id')}" name="mode_id" id="sltConsultationWayIdd">
+										<option value="0">--所有--</option>
+									</select>
+								</span>
+							</div>
+							<!-- <label class="form-label col-xs-1">是否住院：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select"  name="zy_status" id="sltHospital">
+										<option value="0">--请选择--</option>
+										<option value="1">门诊</option>
+										<option value="2">有住院</option>
+									</select>
+								</span>
+							</div>
+							<label class="form-label col-xs-1">消费状态：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" name="xf_status" id="sltConsultationWayId">
+										<option value="0">--请选择消费--</option>
+										<option value="1">有消费</option>
+										<option value="2">未消费</option>
+									</select>
+								</span>
+							</div> -->
+						</div>
+						<div class="row cl">
+							<label class="form-label col-xs-1">来源网站：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" did="{:input('get.site_id')}" name="site_id" id="sltSourceSiteId">
+										<option value="0">--所有--</option>
+									</select>
+								</span>
+							</div>
+							<label class="form-label col-xs-1">预约技师：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" did="{:input('get.ys_id')}" name="ys_id" id="sltDoctorId">
+										<option value="0">--所有--</option>
+									</select>
+								</span>
+							</div>
+							<label class="form-label col-xs-1">关键词：</label>
+							<div class="formControls col-xs-2">
+								<input name="source_kw" value="{:input('source_kw')}" class="input-text"  />
+							</div>
+							<label class="form-label col-xs-1">排序方式：</label>
+							<div class="formControls col-xs-2">
+								<span class="select-box">
+									<select class="select" name="sort_type" id="sltSortType">
+										<option value="zx_time" selected="">登记时间</option>
+										<option value="yuyueTime">预约日期</option> 
+										<option value="userID">咨询员</option>
+										<option value="huifangcishu">回访次数</option>
+										<option value="guanjianci">关键词</option>
+										<option value="bz_ID">类别</option>
+										<option value="zxfs_ID">咨询方式</option>
+										<option value="xx_ID">信息来源</option>
+										<option value="xiaofei">消费</option>
+										<option value="daozhen_time">到店时间</option>
+										<option value="last_visit_time">回访时间</option>
+									</select>
+								</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4" style="padding:0px;">
+								<div class="form-group">
+									<label class="col-sm-12 control-label">登记日期</label>
+									<div class="col-md-6">
+										<input name="zx_dateStart" type="text" placeholder="开始日期" value="{$zx_dateStart}" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+									</div>
+									<div class="col-md-6">
+										<input name="zx_dateEnd" type="text" placeholder="结束日期" value="{$zx_dateEnd}" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4" style="padding:0px;">
+								<div class="form-group">
+									<label class="col-sm-12 control-label">预约到店日期</label>
+									<div class="col-md-6">
+										<input name="yy_dateStart" value="{$yy_dateStart}" type="text" placeholder="开始日期" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+									</div>
+									<div class="col-md-6">
+										<input name="yy_dateEnd" value="{$yy_dateEnd}" type="text" placeholder="结束日期" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4" style="padding:0px;">
+								<div class="form-group">
+									<label class="col-sm-12 control-label">到店日期</label>
+									<div class="col-md-6">
+										<input name="dz_dateStart" value="{$dz_dateStart}" type="text" placeholder="开始日期" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+									</div>
+									<div class="col-md-6">
+										<input name="dz_dateEnd" value="{$dz_dateEnd}" type="text" placeholder="结束日期" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="pt-20" style="clear: both;">
+				<input type="text" class="input-text" value="{:input('kw')}" style="width:300px" placeholder="输入用户名称、电话、预约号" name="kw">
+				<button type="submit" class="btn btn-success radius"  ><i class="Hui-iconfont"></i> 搜一搜</button>
+				&nbsp;&nbsp;<a href='javascript:HiSeach();' id="hibtn" class="btn  btn-danger radius"  >高级搜索</a>
+				&nbsp;&nbsp;<a href='{:url('')}' class="btn btn-success radius"  >清空条件</a>
+			</div>
+			<input type="hidden" id="lvt_dateStart" name="lvt_dateStart">
+			<input type="hidden" id="lvt_dateEnd" name="lvt_dateEnd">
+
+			<input type="hidden" id="sltDateType" name="sltDateType" value="{$sltDateType}">
+		</form>
+		<iframe src="{:url('form')}" name="booking_index" id="booking_index"></iframe>
+	</div>
+
+	{/block}
+	{block name='js'}
+	{js href='__STATIC__H-ui/lib/My97DatePicker/WdatePicker.js'/}
+	{js href='/static/ajax.js'/}
+	{js href='/static/time.js'/}
+	<script type="text/javascript">
+		/*用户-角色-删除*/
+		function admin_role_del(obj,id){
+			common_opt('数据删除须谨慎，确认要删除吗？',id,"{:url('delete')}");
+		}
+		//到院
+		function arriving(id,name) {
+			common_opt('【'+name+'】到店了吗？',id,"{:url('arriving')}");
+		}
+		$('#sltDzStatus').val("{:input('dz_status')}");
+		$('#sltHospital').val("{:input('zy_status')}");
+		$('#sltConsultationWayId').val("{:input('xf_status')}");
+		$('#sltSortType').val("{:input('sort_type')}");
+		BS_Ajax.site($('#sltSourceSiteId'),true);
+		BS_Ajax.source($('#sltSourceId'),true);
+		BS_Ajax.customService($('#sltCustomServiceId'),true);
+		BS_Ajax.doctor($('#sltDoctorId'),true);
+		BS_Ajax.depDisease($('#sltDepartmentId'),$('#sltDiseaseId'),true);
+		BS_Ajax.depconsultationWay($('#sltConsultationWayId'),$('#sltConsultationWayIdd'),true);
+		BS_Ajax.comeWay($('#sltComeWayId'),true);
+		var hi_seach_p=false;
+		function HiSeach() {
+			$con=$('#Huifold4 .item .info');
+			if(hi_seach_p){
+				$con.slideUp(400).end().removeClass("selected"); 
+				hi_seach_p=false;
+			}else{
+				$con.slideDown(400).end().addClass("selected"); 
+				hi_seach_p=true;
+			}
+			setIfrmSize();
+		}
+		$(window).resize(setIfrmSize).resize();
+		function setIfrmSize () {
+			var nh=hi_seach_p?310:155;
+			$('#booking_index').height($(window).height()-nh);
+		}
+		function openSwt(obj){ 
+			layer.open({
+				type: 1,
+				skin: 'layui-layer-rim', 
+				area: ['750px', '500px'],  
+				content: '<pre>'+$(obj).prev().html()+'</pre>'
+			});
+		}
+		
+
+		
+		function set_query_date(ty,dt) {
+			var func='';
+			switch(dt){
+				case 'Today':
+				func=locData.getToday;
+				break;
+				case 'Yesterday':
+				func=locData.getYesterday;
+				break;
+				case 'Week':
+				func=locData.getWeek;
+				break;
+				case 'LastWeek':
+				func=locData.getLastWeek;
+				break;
+				case 'Last7Days':
+				func=locData.getLast7Days;
+				break;
+				case 'Month':
+				func=locData.getMonth;
+				break;
+				case 'LastMonth':
+				func=locData.getLastMonth;
+				break;
+				case 'Year':
+				func=locData.getYear;
+				break;
+				case 'Tomorrow':
+				func=locData.getTomorrow;
+				break;
+			}
+			func(function (sdate,edate) {
+				set_query_time(ty,sdate,edate);
+			});
+		}
+		function set_query_time(ty,sdate,edate) {
+			$("input[name='zx_dateStart']").val('');
+			$("input[name='zx_dateEnd']").val('');
+			$("input[name='yy_dateStart']").val('');
+			$("input[name='yy_dateEnd']").val('');
+			$("input[name='dz_dateStart']").val('');
+			$("input[name='dz_dateEnd']").val('');
+			$("#lvt_dateStart").val('');
+			$("#lvt_dateEnd").val('');
+			if(ty==1){
+				//咨询时间
+				$("input[name='zx_dateStart']").val(sdate);
+				$("input[name='zx_dateEnd']").val(edate);
+			}else if(ty==2){
+				$("input[name='yy_dateStart']").val(sdate);
+				$("input[name='yy_dateEnd']").val(edate);
+			}else if(ty==3){
+				$("input[name='dz_dateStart']").val(sdate);
+				$("input[name='dz_dateEnd']").val(edate);
+			}
+			else if(ty==4){
+				$("#lvt_dateStart").val(sdate);
+				$("#lvt_dateEnd").val(edate);
+			}
+			$('#sltDateType').val(ty);
+			$('#formQuery').submit();
+		}
+		$(function() {
+			$('#formQuery').submit();
+		})
+	</script>
+	{/block}

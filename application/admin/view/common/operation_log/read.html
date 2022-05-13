@@ -1,0 +1,61 @@
+{extend name="layout/list" /}
+{block name='nav'}
+{:breadcrumb("CommonOperationLog/Index")}>日志查看
+{/block}
+{block name="body"}
+<style type="text/css">
+	.jian_tou{
+		color: red;
+	}
+</style>
+<table class="table table-border table-bordered table-bg mt-20">
+	<thead>
+		<tr>
+			<th colspan="2" scope="col">基础信息</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th width="30%">操作员</th>
+			<td><span id="lbServerName">{$info.name}</span></td>
+		</tr>
+		<tr>
+			<td>操作日期</td>
+			<td>{$info.created|date='Y-m-d h:i:s',###}</td>
+		</tr>
+		<tr>
+			<td>IP地址</td>
+			<td>{$info.ip}</td>
+		</tr>
+		<tr>
+			<td>IP归属地</td>
+			<td>{$info.ip_address}</td>
+		</tr>
+		<tr>
+			<td>操作内容 </td>
+			<td>{$info.msg}</td>
+		</tr>
+	</tbody>
+</table>
+<table class="table table-border table-bordered table-bg mt-20">
+	<thead>
+		<tr>
+			<th colspan="2" scope="col">
+				{$info.type_text}的信息
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+		$data=json_decode($info['log']);
+		foreach ($data as $key => $value) {
+			if($info['type']==1||$info['type']==3){
+				echo "<tr><td width=\"30%\"><nobr>$key</nobr></td><td>$value</td></tr>";
+			}else{
+				echo "<tr><td><nobr>$key</nobr></td><td>$value[0]<span class='jian_tou'>&nbsp;=>&nbsp;</span>$value[1]</td></tr>";
+			}
+		}
+		?>
+	</tbody>
+</table>
+{/block}

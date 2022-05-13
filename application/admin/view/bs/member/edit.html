@@ -1,0 +1,142 @@
+{extend name="layout/edit" /}
+{block name="body"}
+<style type="text/css">
+	.form-label{
+		padding: 0px;
+	}
+	label.error{
+		top:0;
+	}
+</style>
+<form class="form form-horizontal " action="{:url('update')}" id="main_form" method="post">
+<input name="id" type="hidden" value="{$info.id}">
+	<div class="col-xs-12">
+		<div class="row cl">
+			<label class="form-label col-xs-2">姓名：<span class="c-red">*</span></label>
+			<div class="formControls col-xs-4">
+				<input type="text" class="input-text" placeholder="姓名" name="name" datatype="*2-16" required value="{$info.name}" nullmsg="姓名不能为空" errormsg='姓名至少2个字符,最多16个字符！'/>
+			</div>
+			<label class="form-label col-xs-2">会员卡号：</label>
+			<div class="formControls col-xs-4">
+				<input type="text" class="input-text" disabled="" value="{$info.card_no}" />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-2">联系电话：<span class="c-red">*</span></label>
+			<div class="formControls col-xs-4">
+				<input type="text" class="input-text" value="{$info.phone}" placeholder="联系电话" name="phone" datatype="m"  nullmsg="联系电话不能为空" required/>
+			</div> 
+			
+			<label class="form-label col-xs-2">年龄：</label>
+			<div class="formControls col-xs-4">
+				<input type="text" class="input-text" value="{$info.age}" placeholder="年龄" name="age" />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-2">身份证：</label>
+			<div class="formControls col-xs-4">
+				<input type="text" class="input-text" value="{$info.idcard}" placeholder="身份证" name="idcard" />
+			</div>
+			<label class="form-label col-xs-2">性别：</label>
+			<div class="formControls col-xs-4  skin-minimal">
+				<div class="radio-box">
+					<input type="radio" value="1" name="gender" id="gender-1" checked>
+					<label for="gender-1">男</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="2" name="gender" id="gender-2" >
+					<label for="gender-2">女</label>
+				</div> 
+			</div> 
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-2">所属省份：</label>
+			<div class="formControls col-xs-4">
+				<span class="select-box">
+					<select class="select" did='{$info.province_id}' id="sltProvince" name="province_id"  ></select>
+				</span>
+			</div>
+			<label class="form-label col-xs-2">所在市区：</label>
+			<div class="formControls col-xs-4">
+				<span class="select-box">
+					<select class="select" did='{$info.city_id}' id="sltCity" name="city_id"></select>
+				</span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-2">详细地址：</label>
+			<div class="formControls col-xs-10">
+				<input type="text" class="input-text" value="{$info.address}" placeholder="详细地址" name="address" />
+			</div>
+
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-2">备注：</label>
+			<div class="formControls col-xs-10">
+				<textarea class="textarea" name="remark">{$info.remark}</textarea>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2 text-c mt-20"> 
+			<button id="btnSubmit" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont"></i> 保存</button> 
+		</div>
+	</div>
+</form>
+{/block}
+{block name='js'}
+{js href='/static/H-ui/lib/icheck/jquery.icheck.min.js'/}
+{js href='__STATIC__H-ui/lib/My97DatePicker/WdatePicker.js'/}
+{js href='__STATIC__H-ui/lib/Validform_v5.3.2_min.js'/}
+{js href='/static/area.js'/}
+{js href='/static/ajax.js'/}
+<script type="text/javascript">
+
+	$('#code').keydown(function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0]; 
+		if(e && e.keyCode==13){  
+			$.post('{:url('check_code')}', {'code': $(this).val()}, function(data) {
+				if(data.status==1){
+					$('#code-pw').focus();
+				}else{
+					alert_error(data.info);
+				}
+			}); 
+			e.stopPropagation();
+			return false; 
+		}
+	});
+	$('#code-pw').keydown(function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0]; 
+		if(e && e.keyCode==13){  
+			$('#code-pw2').focus();
+			e.stopPropagation();
+			return false; 
+		}
+
+	});
+	$('#code-pw2').keydown(function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0]; 
+		if(e && e.keyCode==13){  
+			if ($('#code-pw2').val()!==$('#code-pw').val()) {
+				alert_error('两次密码输入不同');
+				return false;
+			};
+		}
+	});
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	BsArea($('#sltProvince'),$('#sltCity'));
+	$('#btnSubmit').click(function(event) {
+		$('#main_form').submit();
+	});
+	ajaxForm("#main_form");
+</script>
+{/block}

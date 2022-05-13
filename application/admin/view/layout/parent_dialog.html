@@ -1,0 +1,49 @@
+{include file="layout:_meta" /}
+{block name="css"}{/block}
+</head>
+<body>
+	<div class="page-container">
+		{block name='body'}{/block}
+	</div>
+	{js href='__STATIC__H-ui/lib/jquery/1.9.1/jquery.min.js'/}
+	{js href='__STATIC__H-ui/static/h-ui/js/H-ui.js'/}
+	{js href='__STATIC__H-ui/static/h-ui/js/H-ui.admin.js'/}
+	{js href='__STATIC__H-ui/lib/layer/2.1/layer.js'/}
+	{js href='__STATIC__H-ui/lib/Validform_v5.3.2_min.js'/}
+	<script type="text/javascript">
+		var ajaxForm=function(slt,fuc){
+			if(fuc==undefined||fuc==null){
+				fuc=close_win;
+			}
+			$(slt).Validform({
+				'tiptype':4,
+				'postonce':true,
+				'ajaxPost':true,
+				beforeSubmit:function(curform){
+					
+				},
+				callback:function(d){
+					if(d.status==1){
+						alert_success(d.info,fuc);
+					}else{
+						alert_error(d.info);
+					}
+					return false;
+				}
+			});
+		}
+		var alert_error=function (msg,fuc) {
+			layer.msg(msg, {icon: 2},fuc);
+		};
+		var alert_success=function (msg,fuc) {
+			layer.msg(msg, {icon: 1},fuc);
+		};
+		var close_win=function () {
+			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			parent.refresh_iframe();
+			parent.layer.close(index); 
+		};
+	</script>
+	{block name="js"}{/block}
+</body>
+</html>

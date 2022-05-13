@@ -1,0 +1,355 @@
+{extend name="layout/base" /}
+{block name='body'}
+<style type="text/css">
+	.am-tabs-nav{
+		display: none;
+	}
+	.am-tabs{
+		min-height: 300px;
+	}
+	.am-tabs-bd{
+		border: none;
+	}
+	.boxes{
+		text-align: center;
+		background: #fff;
+		padding: 10px;
+		margin-top: 20px;
+	}
+	body,#nav_man_head{
+		background: #f8f8f8;
+	}
+	.am-tabs-bd .am-tab-panel{
+		padding: 0px;
+		background: #fff;
+	}
+	.am-tabs-bd .am-list{
+		padding: 10px;
+	}
+	.boxes .box,.am-comments-list{
+		padding: 10px;
+	}
+	/*.boxes .box img{
+		width: 80%;
+	}*/
+	.am-footer{
+		margin-top: 10px;
+	}
+	.ds-time {
+		font-size: 12px;
+		margin-right: 8px;
+		margin-left: 8px;
+		color: #999;
+	}
+	.am-comment-main{
+		border-radius: 5px;
+	}
+	#guahao_panl{
+		padding: 10px;
+	}
+	.am-footer-default{
+		background-color:#f8f8f8;
+	}
+	.color1{color: red;font-size: 13px;}
+	.color2{color: #19a97b;font-size: 13px;}
+	.feiy{margin: 0;padding: 0}
+	.feiy li{list-style: none;font-size: 12px;float: left;margin-right: 5px;}
+	.feiy li p{margin: 0;}
+
+</style>
+<div class="am-tabs" id="page_tab" data-am-tabs>
+	<ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
+		<li class="am-active"><a href=""></a></li>
+		<li><a href=""></a></li>
+		<li><a href=""></a></li>
+		<li><a href=""></a></li>
+		<li><a href=""></a></li>
+		<li><a href=""></a></li>
+		<li><a href=""></a></li>
+	</ul>
+	<div class="am-tabs-bd">
+		<div class="am-tab-panel am-fade am-in am-active" title="会员信息">
+			<div id="nav_man_head">
+				<div id="nav_man_head_img">
+					<img width="100%" class="am-img-thumbnail am-circle" src="/static/wap/avatar/avatar5.png">
+				</div>
+				<div id="nav_man_head_des">
+					<span>{$member.name}</span>&nbsp;&nbsp;
+
+					<span><i class="am-icon-credit-card" aria-hidden="true">：</i>{$mInfo.card_no}</span>
+					<br/>
+
+					<ul class="feiy">
+						<li><p>公共费用</p>
+							{$member.balance}</li>
+							<li><p>门诊费用</p>
+								{$member.mz_money}</li>
+								<li><p>住院费用</p>
+									{$member.zy_money}</li>
+								</ul>
+								<br/>
+							</div>
+
+						</div>
+						<ul class="am-avg-sm-3 boxes">
+							<li onclick="openPage(1);" class="box box-1">
+								<img src="/static/wap/recharge_log.png" alt="">
+								<div>充值记录</div>
+							</li>
+							<li onclick="openPage(2);" class="box box-2">
+								<img src="/static/wap/charge_log.png" alt="">
+								<div>消费记录</div>
+							</li>
+							<li class="box box-3" onclick="openPage(4);">
+								<img src="/static/wap/guahao.png" alt="">
+								<div>预约挂号</div>
+							</li>
+							<li class="box box-4" onclick="openPage(3);">
+								<img src="/static/wap/sys_msg.png" alt="">
+								<div>系统消息</div>
+							</li>
+							<li class="box box-5" onclick="openPage(5);">
+								<img src="/static/wap/jiuzheng_log.png" alt="">
+								<div>就诊记录</div>
+							</li> 
+							<li class="box box-6" onclick="openPage(6);">
+								<img src="/static/wap/feiyong.png" alt="">
+								<div>余额查询</div>
+							</li> 
+							
+						</ul>
+					</div>
+					<div class="am-tab-panel am-fade" title="充值记录">
+						<ul class="am-list">
+							{if condition='$rlLis and count($rlLis)>0'}
+							{volist name='rlLis' id='vo'}
+							<li class="am-g am-list-item-dated">
+								<a href="#" class="am-list-item-hd color1">
+									<span class="am-badge am-badge-success am-round">公共:{$vo.money} / 门诊:{$vo.mz_money} / 住院:{$vo.zy_money}</span>
+								</a>
+								<span class="am-list-date" style='top:0px;'>{$vo.hospital_name}</span>
+								<span class="am-list-date">{$vo.create_time|date='m-d',###}</span>
+							</li>
+
+							{/volist}
+							{else/}
+							<center>暂无记录(*＾-＾*)</center>
+							{/if}
+						</ul>
+					</div>
+					<div class="am-tab-panel am-fade" title="消费记录">
+						<ul class="am-list">
+							{if condition='$clLis and count($clLis)>0'}
+							{volist name='clLis' id='vo'}
+							<li class="am-g am-list-item-dated">
+								<a href="#" class="am-list-item-hd color2">
+									<span class="am-badge am-badge-danger am-round">公共:{$vo.money} / 门诊:{$vo.mz_money} / 住院:{$vo.zy_money}</span>
+								</a>
+								<span class="am-list-date" style='top:0px;'>{$vo.hospital_name}</span>
+								<span class="am-list-date">{$vo.create_time|date='m-d',###}</span>
+							</li>
+							{/volist}
+							{else/}
+							<center>暂无记录(*＾-＾*)</center>
+							{/if}
+						</ul>
+					</div>
+					<div class="am-tab-panel am-fade" title="系统消息">
+						<ul class="am-comments-list am-comments-list-flip">
+							{volist name='notice' id='vo'}
+							<li class="am-comment">
+								<a href="">
+									<img class="am-comment-avatar" src="/static/wap/avatar/avatar1.png" alt=""/>
+								</a>
+								<div class="am-comment-main">
+									<header class="am-comment-hd">
+										<div class="am-comment-meta">
+											<a href="#link-to-user" class="am-comment-author">{$vo.title}</a>
+										</div>
+									</header>
+									<div class="am-comment-bd">
+										{$vo.content}
+									</div>
+									<div class="ds-comment-footer ds-comment-actions">
+										<span class="ds-time">{$vo.create_time|date='Y-m-d',###}</span>
+										<span>By:{$vo.name|def='远大集团'}</span>
+									</div>
+								</div>
+							</li>
+							{/volist}
+						</ul>
+					</div>
+					<div class="am-tab-panel am-fade" title="预约挂号" id='guahao_panl'>
+						<form class="am-form" id="frmGuahao">
+							<div class="am-form-group am-form-icon">
+								<i class="am-icon-user"></i> 
+								<input type="text" name="name" value="{$member.name}" class="am-form-field" placeholder="姓名">
+							</div>
+							<div class="am-form-group am-form-icon">
+								<i class="am-icon-phone"></i>
+								<input type="text" name="mobile" value="{$mInfo.phone}" class="am-form-field" placeholder="电话">
+							</div>
+
+							<div class="am-form-group am-form-select">
+								<select id="sltHospital" name="hospital_id" data-am-selected="{btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
+									<option value="0">==选择医院==</option>
+									{volist name='hs' id='item'}
+									<option value="{$item.id}">{$item.name}</option>
+									{/volist}
+								</select>
+							</div>
+							<div class="am-form-group am-form-select">
+								<select id="sltDisease" name="department_id">
+									<option value="0">==选择病种==</option>
+								</select>
+							</div>
+
+
+							<div class="am-form-group am-form-icon">
+								<i class="am-icon-calendar"></i> 
+								<input type="text" id="my-start-2"  data-am-datepicker name="yy_time" class="am-form-field" placeholder="预约日期" readonly>
+							</div>
+
+
+							<div class="am-form-group">
+								<textarea style="width: 100%;" name="remark" placeholder="备注" rows="5"
+								></textarea>
+							</div>
+							<button type="button" onclick="guahao_ing();" class="am-btn am-btn-primary am-btn-block">预约挂号</button>
+							<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="my-modal-loading">
+								<div class="am-modal-dialog">
+									<div class="am-modal-hd">挂号中...</div>
+									<div class="am-modal-bd">
+										<span class="am-icon-spinner am-icon-spin"></span>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="am-tab-panel am-fade" title="就诊记录">
+						<ul class="am-comments-list am-comments-list-flip">
+							{volist name='bookLis' id='vo'}
+							<li class="am-comment">
+								<a href="">
+									<img class="am-comment-avatar" src="/static/wap/avatar/avatar1.png" alt=""/>
+								</a>
+								<div class="am-comment-main">
+									<header class="am-comment-hd">
+										<div class="am-comment-meta">
+											{$vo.name}-{$vo.mobile}
+											<span class="am-badge am-badge-warning am-round">{$vo.department_name}</span>
+										</div>
+									</header>
+									<div class="am-comment-bd">
+										<blockquote>
+											{$vo.remark|def='没有备注信息！'}
+										</blockquote>
+									</div>
+									<div class="ds-comment-footer ds-comment-actions">
+										<span class="ds-time">{$vo.create_time|date='Y-m-d',###}</span>
+										<span class="ds-time">{$vo.hospital_name|def='远大集团'}</span>
+									</div>
+								</div>
+							</li>
+							{/volist}
+						</ul>
+					</div>
+					<div class="am-tab-panel am-fade" title="余额查询">
+						
+					</div>
+				</div>
+			</div>
+
+			<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" id="2311">
+				<ul class="am-navbar-nav am-cf am-avg-sm-4">
+					<li>
+						<a href="javascript:openPage(1);"  class="">
+							<span class="am-icon-calendar-plus-o"></span>
+							<span class="am-navbar-label">充值记录</span>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:openPage(2);"  class="">
+							<span class="am-icon-calendar-minus-o"></span>
+							<span class="am-navbar-label">消费记录</span>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:openPage(4);"  class="">
+							<span class="am-icon-comments"></span>
+							<span class="am-navbar-label">预约挂号</span>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:openPage(0);" class="">
+							<span class="am-icon-user"></span>
+							<span class="am-navbar-label">用户中心</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+				<div class="am-modal-dialog">
+					<div class="am-modal-hd">Amaze UI</div>
+					<div class="am-modal-bd">
+						Hello world！
+					</div>
+					<div class="am-modal-footer">
+						<span class="am-modal-btn">确定</span>
+					</div>
+				</div>
+			</div>
+			{/block}
+			{block name="js"}
+			<script type="text/javascript">
+				function openPage(index) {
+					var tit=$('.am-tab-panel').eq(index).attr('title');
+					$('.am-header-title').text(tit);
+					$('#page_tab').tabs('open', index);
+				}
+
+			</script>
+			<script  type="text/javascript">
+				$('#sltHospital').change(function() {
+					$hid=$(this).val();
+					$.post("{:url('ajax_bz')}", {'hid': $hid}, function(result) {
+						$sltDis=$('#sltDisease');
+						$sltDis.find('option:gt(0)').remove();	
+						if(result.status==1){
+							$.each(result.data,function(index, el) {
+								$sltDis.append('<option value="'+el.id+'">'+el.name+'</option>')
+							});
+						}else{
+
+						}
+					});
+				});
+				function guahao_ing() {
+					$('#my-modal-loading').modal('open');
+					$.post("{:url('guahao')}",$('#frmGuahao').serialize(), function(result) {
+						$('#my-modal-loading').modal('close');
+						if(result.status==1){
+							location.href=location.href;
+						}
+						my_alert('系统提示',result.info,function(r){
+				//openPage(5);
+				location.reload();
+			});
+					});
+				}
+				function my_alert(title,content,func) {
+					$('#my-alert .am-modal-hd').text(title);
+					$('#my-alert .am-modal-bd').text(content);
+					$('#my-alert').modal({
+						relatedTarget: this,
+						onConfirm: function(e) {
+							func(true);
+						},
+						onCancel: function(e) {
+							func(false);
+						}
+					});
+
+				}
+			</script>
+			{/block}
